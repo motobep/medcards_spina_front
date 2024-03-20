@@ -1,11 +1,15 @@
 <script setup>
 import Calendar from 'primevue/calendar';
-import CreateCard from '@components/CreateCard.vue'
 import ShowCard from '@components/ShowCard.vue';
 import History from '@components/History.vue';
 import Header from '@components/Header.vue';
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { Auth } from '@/helpers'
+import { useAuthStore } from '@/stores/auth'
+import moment from 'moment'
+
+const authStore = useAuthStore()
 
 const list = [
 	'Spina Муштари',
@@ -15,23 +19,7 @@ const list = [
 
 const date = ref('19/03/24')
 
-let clients = [
-	{
-	 name: 'Колотова Александра Александровна 1',
-	 service: 'Услуга',
-	 time: '11:00 - 12:00',
-	},
-	{
-	 name: 'Колотова Александра Александровна 2',
-	 service: 'Услуга',
-	 time: '11:00 - 12:00',
-	},
-	{
-	 name: 'Колотова Александра Александровна 3',
-	 service: 'Услуга',
-	 time: '11:00 - 12:00',
-	},
-]
+let clients = ref([])
 
 let history = [
 	['14/11/23', 'Ханов', 'Ожидание', 'Коррекция'],
@@ -41,6 +29,28 @@ let history = [
 let tab = ref(0)
 
 let clientId = ref(0)
+
+onMounted(async () => {
+	let auth = new Auth(authStore)
+	let resp = await auth.post('get_employee_schedule', {
+		body: JSON.stringify({
+			company_id: "242652",
+			date: '18.03.2024',
+		})
+	})
+	let data = await resp.json()
+	clients.value = data.map((el) => {
+		let date_start = moment.unix(el.timestamp)
+		let date_end = moment.unix(el.timestamp + el.length)
+		return {
+			client_id: el.client_id,
+			name: el.client_name,
+			time_start: `${date_start.format('HH:mm')}`,
+			time_end: `${date_end.format('HH:mm')}`,
+			service: el.services.join(', '),
+		}
+	})
+})
 </script>
 <template>
 	<div class="flex">
@@ -52,11 +62,11 @@ let clientId = ref(0)
 			<Calendar class="mb-2" v-model="date" inline dateFormat="dd/mm/yy" />
 
 			<div class="overflow-y-auto">
-				<div v-for="(c, idx) in clients" class="border border-gray-500 rounded-lg p-2 mt-4 cursor-pointer"
-					:class="{ 'bg-gray-200': clientId === idx }" @click="clientId = idx">
-					<div class="border-b border-gray-400 mb-1">{{ c.time }}</div>
-					<div class="mb-2">{{ c.service }}</div>
-					<div>{{ c.name }}</div>
+				<div v-for="(item, idx) in clients" class="border border-gray-500 rounded-lg p-2 mt-4 cursor-pointer"
+					:class="{ 'bg-gray-200 dark:bg-gray-700': clientId === idx }" @click="clientId = idx">
+					<div class="border-b border-gray-400 mb-1">{{ item.time_start }} - {{ item.time_end }}</div>
+					<div class="mb-2">{{ item.service }}</div>
+					<div>{{ item.name }}</div>
 				</div>
 			</div>
 		</div>
@@ -64,14 +74,12 @@ let clientId = ref(0)
 			<Header name="Ханов Рамиль Юсупович" />
 
 			<div class="px-5 py-2">
-				<div class="mb-1">Клинет: {{ clients[clientId].name }}</div>
+				<div v-if="clients.length > 0" class="mb-1">Клинет: {{ clients[clientId].name }}</div>
 				<PrimaryBtn @click="tab = 0" class="me-8 mb-5" :class="{ 'font-bold': tab === 0 }">История посещений</PrimaryBtn>
-				<PrimaryBtn @click="tab = 1" class="me-8" :class="{ 'font-bold': tab === 1 }">Создать медкарту</PrimaryBtn>
-				<PrimaryBtn @click="tab = 2" :class="{ 'font-bold': tab === 2 }">Посмотреть медкарту</PrimaryBtn>
+				<PrimaryBtn @click="tab = 2" :class="{ 'font-bold': tab === 2 }">Медкарта</PrimaryBtn>
 
 				<div class="border rounded-lg p-4 ">
 					<History v-if="tab === 0" :history="history" @show-card="tab = 2" />
-					<CreateCard v-if="tab === 1" />
 					<ShowCard v-if="tab === 2" />
 				</div>
 

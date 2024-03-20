@@ -7,15 +7,17 @@ defineProps(['data'])
 		<thead>
 			<tr>
 				<td>№</td>
-				<td>Услуга</td>
-				<td>Количество</td>
+				<td>Дата</td>
+				<td>Сотрудник</td>
+				<td>Текст</td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr v-for="entity in data">
 				<td>{{ entity.id }}</td>
-				<td>{{ entity.service }}</td>
-				<td>{{ entity.amount }}</td>
+				<td>{{ entity.created_at }}</td>
+				<td>{{ entity.creator_name }}</td>
+				<td>{{ entity.text }}</td>
 			</tr>
 		</tbody>
 	</table>

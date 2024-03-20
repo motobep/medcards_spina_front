@@ -3,17 +3,18 @@ import Calendar from 'primevue/calendar';
 import Header from '@components/Header.vue';
 import AdminVisited from '@components/AdminVisited.vue';
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { Auth } from '@/helpers'
+import { useAuthStore } from '@/stores/auth'
 
-const workers = [
-	'Веремеенко Иван Отчество',
-	'Алиев Али Отчество',
-	'Алиев Али Отчество',
-	'Алиев Али Отчество',
-	'Алиев Али Отчество',
-	'Алиев Али Отчество',
-	'Алиев Али Отчество',
-]
+const authStore = useAuthStore()
+
+const workers = ref([
+	{
+		ID: 0,
+		FullName: 'test',
+	}
+])
 
 let workerIdx = ref(0)
 const dates = ref()
@@ -34,18 +35,25 @@ const data = [
 		sum: 2000,
 	},
 ]
+
+onMounted(async () => {
+	let auth = new Auth(authStore)
+	let resp = await auth.get('get_all_employees')
+	let data = await resp.json()
+	workers.value = data
+})
 </script>
 <template>
 	<div class="flex">
 		<div class="w-80 px-2 border-e-2 pt-4 flex flex-col">
 			Сотрудники
-			<PrimaryBtn v-for="(w, idx) in workers" @click="workerIdx = idx">{{ w }}</PrimaryBtn>
+			<PrimaryBtn v-for="(w, idx) in workers" @click="workerIdx = idx">{{ w.FullName }}</PrimaryBtn>
 		</div>
 		<div class="w-5/6">
 			<Header name="Admin" />
 
 			<div class="px-5 py-2">
-				<div class="mb-5">Сотрудник: {{ workers[workerIdx] }}</div>
+				<div class="mb-5">Сотрудник: {{ workers[workerIdx].FullName }}</div>
 
 				<div class="border rounded-lg p-4 ">
 					<div class="mb-2 inline-block me-4">Даты:</div>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { post } from '@/helpers'
 
 const authStore = useAuthStore()
 console.log('jwt', authStore.jwt)
@@ -8,11 +9,10 @@ console.log('jwt', authStore.jwt)
 let name = ref('')
 let password = ref('')
 
-const endpoint = '/api/auth'
+const endpoint = 'auth'
 
 async function submit() {
-	const resp = await fetch(endpoint, {
-		method: 'POST',
+	const resp = await post(endpoint, {
 		headers: {
       'Content-Type': 'application/json',
     },
