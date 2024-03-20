@@ -10,11 +10,18 @@ export const useAuthStore = defineStore('auth', () => {
 		})
 	}
 
-	return { jwt, saveJwt }
+	function deleteJwt() {
+		setCookie('jwt', '', {
+			'SameSite': 'Strict',
+			'expires': 'Thu, 01 Jan 1970 00:00:00 UTC',
+		})
+	}
+
+	return { jwt, saveJwt, deleteJwt }
 })
 
 
-function getCookie(name) {
+export function getCookie(name) {
   let matches = document.cookie.match(new RegExp(
     "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
   ));

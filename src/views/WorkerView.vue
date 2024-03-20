@@ -1,7 +1,5 @@
 <script setup>
 import Calendar from 'primevue/calendar';
-import ShowCard from '@components/ShowCard.vue';
-import History from '@components/History.vue';
 import Header from '@components/Header.vue';
 
 import { ref, onMounted } from 'vue'
@@ -10,6 +8,7 @@ import { useAuthStore } from '@/stores/auth'
 import moment from 'moment'
 
 const authStore = useAuthStore()
+let auth = new Auth(authStore)
 
 const list = [
 	'Spina Муштари',
@@ -18,26 +17,22 @@ const list = [
 ]
 
 const date = ref('19/03/24')
-
 let clients = ref([])
-
-let history = [
-	['14/11/23', 'Ханов', 'Ожидание', 'Коррекция'],
-	['14/10/23', 'Ханов 2', 'Ожидание 2', 'Коррекция 2'],
-]
-
-let tab = ref(0)
-
 let clientId = ref(0)
 
 onMounted(async () => {
-	let auth = new Auth(authStore)
 	let resp = await auth.post('get_employee_schedule', {
 		body: JSON.stringify({
 			company_id: "242652",
 			date: '18.03.2024',
 		})
 	})
+
+	if (resp.status === 401) {
+		// authStore.deleteJwt()
+		// location.reload()
+	}
+
 	let data = await resp.json()
 	clients.value = data.map((el) => {
 		let date_start = moment.unix(el.timestamp)
@@ -75,12 +70,16 @@ onMounted(async () => {
 
 			<div class="px-5 py-2">
 				<div v-if="clients.length > 0" class="mb-1">Клинет: {{ clients[clientId].name }}</div>
-				<PrimaryBtn @click="tab = 0" class="me-8 mb-5" :class="{ 'font-bold': tab === 0 }">История посещений</PrimaryBtn>
-				<PrimaryBtn @click="tab = 2" :class="{ 'font-bold': tab === 2 }">Медкарта</PrimaryBtn>
+				<RouterLink to="/worker/history" active-class="font-bold">
+					<PrimaryBtn class="me-8 mb-5">История посещений</PrimaryBtn>
+				</RouterLink>
+
+				<RouterLink to="/worker/medcard" active-class="font-bold">
+					<PrimaryBtn>Медкарта</PrimaryBtn>
+				</RouterLink>
 
 				<div class="border rounded-lg p-4 ">
-					<History v-if="tab === 0" :history="history" @show-card="tab = 2" />
-					<ShowCard v-if="tab === 2" />
+					<RouterView />
 				</div>
 
 			</div>

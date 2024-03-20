@@ -4,6 +4,11 @@ import WorkerView from '@views/WorkerView.vue'
 import AdminView from '@views/AdminView.vue'
 import PagesView from '@views/PagesView.vue'
 
+import ShowCard from '@components/ShowCard.vue';
+import History from '@components/History.vue';
+
+import { getCookie } from '@/stores/auth'
+
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
@@ -21,6 +26,18 @@ const router = createRouter({
 			path: '/worker',
 			name: 'worker',
 			component: WorkerView,
+			children: [
+				{
+					path: 'history',
+					name: 'history',
+					component: History,
+				},
+				{
+					path: 'medcard',
+					name: 'medcard',
+					component: ShowCard,
+				},
+			]
 		},
 		{
 			path: '/admin',
@@ -28,6 +45,13 @@ const router = createRouter({
 			component: AdminView,
 		},
 	],
+})
+
+router.beforeEach(async (to, from) => {
+	let isAuth = getCookie('jwt') !== undefined
+	if (!isAuth && to.name !== 'login') {
+		return { name: 'login' }
+	}
 })
 
 export default router
