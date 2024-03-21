@@ -1,12 +1,10 @@
 <script setup>
 defineProps(['name'])
 
-import { useAuthStore } from '@/stores/auth'
-
-const authStore = useAuthStore()
+import { jwtStore } from '@/stores/auth'
 
 function logout() {
-	authStore.deleteJwt()
+	jwtStore.delete()
 	location.reload()
 }
 </script>

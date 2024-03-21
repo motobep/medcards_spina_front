@@ -4,10 +4,9 @@ import Header from '@components/Header.vue';
 import AdminVisited from '@components/AdminVisited.vue';
 
 import { ref, onMounted } from 'vue'
-import { Auth } from '@/helpers'
-import { useAuthStore } from '@/stores/auth'
+import { auth } from '@/helpers'
+import { jwtStore } from '@/stores/auth'
 
-const authStore = useAuthStore()
 
 const workers = ref([
 	{
@@ -37,7 +36,6 @@ const data = [
 ]
 
 onMounted(async () => {
-	let auth = new Auth(authStore)
 	let resp = await auth.get('get_all_employees')
 	let data = await resp.json()
 	workers.value = data

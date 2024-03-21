@@ -4,10 +4,9 @@ import Appointments from './Appointments.vue';
 import CreateServices from './CreateServices.vue';
 
 import { ref, onMounted } from 'vue'
-import { Auth } from '@/helpers'
-import { useAuthStore } from '@/stores/auth'
+import { auth } from '@/helpers'
+import { jwtStore } from '@/stores/auth'
 
-const authStore = useAuthStore()
 
 const services = [
 	'Услуга 1',
@@ -19,8 +18,6 @@ let diagnoses = ref([])
 let appointments = ref([])
 
 let diagnosis_text = ref('')
-
-let auth = new Auth(authStore)
 
 onMounted(async () => {
 	await fetch_diagnoses()

@@ -7,7 +7,7 @@ import PagesView from '@views/PagesView.vue'
 import ShowCard from '@components/ShowCard.vue';
 import History from '@components/History.vue';
 
-import { getCookie } from '@/stores/auth'
+import { jwtStore } from '@/stores/auth'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,7 +48,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-	let isAuth = getCookie('jwt') !== undefined
+	let isAuth = jwtStore.get('jwt') !== null
 	if (!isAuth && to.name !== 'login') {
 		return { name: 'login' }
 	}

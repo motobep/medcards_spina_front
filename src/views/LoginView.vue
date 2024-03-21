@@ -1,11 +1,10 @@
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import { jwtStore } from '@/stores/auth'
 import { post } from '@/helpers'
 import router from '@/router'
 
-const authStore = useAuthStore()
-console.log('jwt', authStore.jwt)
+console.log('jwt', jwtStore.get())
 
 let name = ref('')
 let password = ref('')
@@ -13,7 +12,7 @@ let password = ref('')
 const endpoint = 'auth'
 
 async function submit() {
-	const resp = await post(endpoint, {
+	const data = await post(endpoint, {
 		headers: {
 			'Content-Type': 'application/json',
 		},
@@ -23,19 +22,15 @@ async function submit() {
 		},)
 	})
 
-	if (!resp.ok) {
-		console.log('resp not ok')
-		return
-	}
+	if (data === null) return
 
-	const data = await resp.json()
 	if (data.error !== '') {
 		console.log(data.error)
 		return
 	}
 
-	authStore.saveJwt(data.token)
-	console.log('jwt', authStore.jwt)
+	jwtStore.save(data.token)
+	console.log('jwt', jwtStore.get())
 
 	router.push({ path: '/worker/history' })
 }

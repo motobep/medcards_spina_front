@@ -4,11 +4,9 @@ import Header from '@components/Header.vue';
 
 import { ref, onMounted } from 'vue'
 import { Auth } from '@/helpers'
-import { useAuthStore } from '@/stores/auth'
+import { jwtStore } from '@/stores/auth'
 import moment from 'moment'
 
-const authStore = useAuthStore()
-let auth = new Auth(authStore)
 
 const list = [
 	'Spina Муштари',
@@ -21,19 +19,15 @@ let clients = ref([])
 let clientId = ref(0)
 
 onMounted(async () => {
-	let resp = await auth.post('get_employee_schedule', {
+	let data = await auth.post('get_employee_schedule', {
 		body: JSON.stringify({
 			company_id: "242652",
 			date: '18.03.2024',
 		})
 	})
 
-	if (resp.status === 401) {
-		// authStore.deleteJwt()
-		// location.reload()
-	}
+	if (data === null) return
 
-	let data = await resp.json()
 	clients.value = data.map((el) => {
 		let date_start = moment.unix(el.timestamp)
 		let date_end = moment.unix(el.timestamp + el.length)
