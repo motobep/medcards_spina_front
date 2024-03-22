@@ -3,6 +3,7 @@ import LoginView from '@views/LoginView.vue'
 import WorkerView from '@views/WorkerView.vue'
 import AdminView from '@views/AdminView.vue'
 import PagesView from '@views/PagesView.vue'
+import HistoryCard from '@views/HistoryCard.vue';
 
 import ShowCard from '@components/ShowCard.vue';
 import History from '@components/History.vue';
@@ -38,6 +39,11 @@ const router = createRouter({
 					component: ShowCard,
 				},
 			]
+		},
+		{
+			path: '/worker/history/medcard',
+			name: 'histody_card',
+			component: HistoryCard,
 		},
 		{
 			path: '/admin',

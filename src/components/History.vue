@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue'
+import { ref, onMounted } from 'vue'
 import { auth } from '@/helpers'
 import { authStore } from '@/stores/auth'
+import moment from 'moment'
 
 let history = ref([])
 
@@ -28,6 +29,13 @@ async function fetch_history(company_id, client_id) {
 	if (data === null) return
 	history.value = data
 }
+
+let statuses = {
+	'-1': 'Не пришёл',
+	'0': 'Ожидание',
+	'1': 'Пришёл',
+	'2': 'f',
+}
 </script>
 
 <template>
@@ -43,12 +51,12 @@ async function fetch_history(company_id, client_id) {
 		</thead>
 		<tbody>
 			<tr v-for="el in history">
-				<td class="px-4">{{ el.date }}</td>
+				<td class="px-4">{{ moment.unix(el.timestamp).format('DD.MM.YYYY') }}</td>
 				<td class="px-4">{{ el.staff.name }}</td>
-				<td class="px-4">{{ el.attendance }}</td>
+				<td class="px-4">{{ statuses[el.attendance] }}</td>
 				<td class="px-4">{{ el.services[0].title }}</td>
 				<td class="px-4">
-					<PrimaryBtn class="mb-2" @click="$emit('showCard')">Посмотреть медкарту</PrimaryBtn>
+					<PrimaryBtn class="mb-2" @click="$router.push(`/worker/history/medcard?date=${el.timestamp}&employee_id=${el.staff.user_id}`)">Посмотреть медкарту</PrimaryBtn>
 				</td>
 			</tr>
 		</tbody>

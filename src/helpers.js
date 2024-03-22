@@ -24,6 +24,7 @@ class Auth {
 	
 		if (resp.status === 401) {
 		 	jwtStore.delete()
+			// console.error(resp)
 		 	location.reload()
 		}
 

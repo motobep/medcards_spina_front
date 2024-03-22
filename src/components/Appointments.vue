@@ -1,5 +1,5 @@
 <script setup>
-defineProps(['data', 'accept_handler'])
+defineProps(['data', 'accept_handler', 'use_accept'])
 </script>
 
 <template>
@@ -12,7 +12,7 @@ defineProps(['data', 'accept_handler'])
 				<td>Услуга</td>
 				<td>Количество</td>
 				<td>Посещено</td>
-				<td>Действия</td>
+				<td v-if="use_accept">Действия</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -22,7 +22,7 @@ defineProps(['data', 'accept_handler'])
 				<td>{{ entity.created_at }}</td>
 				<td>{{ entity.service }}</td>
 				<td>{{ entity.amount }}</td>
-				<td>{{ entity.visited }}</td>
+				<td v-if="use_accept">{{ entity.visited }}</td>
 				<td><PrimaryBtn @click="accept_handler(entity.id)" class="mb-3">Принять</PrimaryBtn></td>
 			</tr>
 		</tbody>
