@@ -134,7 +134,7 @@ async function accept_visit(id) {
 			<div class="mb-4"></div>
 
 			<div class="font-bold mb-2">Назначения</div>
-			<Appointments :data="appointments" :accept_handler="accept_visit" />
+			<Appointments :data="appointments" :accept_handler="accept_visit" :use_accept="true" />
 
 		</div>
 	</div>

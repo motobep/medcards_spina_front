@@ -22,8 +22,8 @@ defineProps(['data', 'accept_handler', 'use_accept'])
 				<td>{{ entity.created_at }}</td>
 				<td>{{ entity.service }}</td>
 				<td>{{ entity.amount }}</td>
-				<td v-if="use_accept">{{ entity.visited }}</td>
-				<td><PrimaryBtn @click="accept_handler(entity.id)" class="mb-3">Принять</PrimaryBtn></td>
+				<td>{{ entity.visited }}</td>
+				<td v-if="use_accept"><PrimaryBtn @click="accept_handler(entity.id)" class="mb-3">Принять</PrimaryBtn></td>
 			</tr>
 		</tbody>
 	</table>
