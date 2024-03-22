@@ -1,5 +1,7 @@
 <script setup>
 defineProps(['data', 'accept_handler', 'use_accept'])
+
+import moment from 'moment'
 </script>
 
 <template>
@@ -19,7 +21,7 @@ defineProps(['data', 'accept_handler', 'use_accept'])
 			<tr v-for="entity in data">
 				<td>{{ entity.id }}</td>
 				<td>{{ entity.creator_name }}</td>
-				<td>{{ entity.created_at }}</td>
+				<td>{{ moment(entity.created_at).format('DD.MM.YYYY') }}</td>
 				<td>{{ entity.service }}</td>
 				<td>{{ entity.amount }}</td>
 				<td>{{ entity.visited }}</td>

@@ -8,6 +8,7 @@ console.log('jwt', jwtStore.get())
 
 let name = ref('')
 let password = ref('')
+let error_msg = ref('')
 
 const endpoint = 'auth'
 
@@ -17,14 +18,18 @@ async function submit() {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
-			login: name.value,
-			password: password.value,
-			// login: '+7 (911) 565-52-43',
-			// password: 'P@ssw0rd',
+			// login: name.value,
+			// password: password.value,
+			login: '+7 (911) 565-52-43',
+			password: 'P@ssw0rd',
 			// login: 'testadmin',
 			// password: '123123',
 		},)
 	})
+
+	if (resp.status === 400) {
+		error_msg.value = 'Неверный логин или пароль'
+	}
 
 	if (!resp.ok) {
 		console.warn('resp status', resp.status)
@@ -62,6 +67,7 @@ async function submit() {
 				<div class="mb-1 ml-2">Пароль</div>
 				<input v-model="password" name="password"
 					class="border border-gray-500 rounded-xl px-2 py-0.5 mb-3 dark:bg-gray-700" type="password"> <br>
+				<div class="text-red-400">{{ error_msg }}</div>
 				<button id="send" type="submit"
 					class="border border-gray-700 bg-gray-100 rounded-md px-2 mt-4 dark:bg-gray-800 dark:shadow-sm dark:shadow-gray-700">Войти</button>
 			</form>
