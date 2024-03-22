@@ -7,6 +7,9 @@ import { auth } from '@/helpers'
 import { authStore } from '@/stores/auth'
 import moment from 'moment'
 
+
+let employee_name = ref('')
+
 let client_cached = authStore.get('client')
 
 let date_cached_text = authStore.get('date')
@@ -43,6 +46,7 @@ let date_formatted = computed(() => {
 
 onMounted(async () => {
 	await fetch_companies()
+	employee_name.value = authStore.get('employee_name')
 })
 
 watchEffect(async () => {
@@ -123,7 +127,7 @@ async function fetch_clients(company_id, date) {
 			</div>
 		</div>
 		<div class="w-5/6">
-			<Header name="Ханов Рамиль Юсупович" />
+			<Header :name="employee_name" />
 
 			<div class="px-5 py-2">
 				<div v-if="client_selected.name && clients.length > 0" class="mb-1">Клинет: {{ client_selected.name }}</div>

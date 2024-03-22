@@ -47,6 +47,7 @@ async function submit() {
 
 	jwtStore.save(data.token)
 	authStore.setIsAdmin(data.is_admin)
+	authStore.set('employee_name', data.employee_name)
 
 	if (authStore.isAdmin()) {
 		router.push({ path: '/admin' })
