@@ -48,7 +48,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-	let isAuth = jwtStore.get('jwt') !== null
+	let isAuth = jwtStore.get() !== null
 	if (!isAuth && to.name !== 'login') {
 		return { name: 'login' }
 	}

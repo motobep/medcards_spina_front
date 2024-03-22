@@ -1,13 +1,23 @@
 export const jwtStore = {
 	get: () => {
-		sessionStorage.getItem('jwt')
+		return sessionStorage.getItem('jwt')
 	},
 
 	save: (token) => {
-		sessionStorage.setItem('jwt', token)
+		return sessionStorage.setItem('jwt', token)
 	},
 
 	delete: () => {
-		sessionStorage.removeItem('jwt')
+		return sessionStorage.removeItem('jwt')
+	},
+}
+
+export const authStore = {
+	isAdmin: () => {
+		return sessionStorage.getItem('isAdmin') === 'true'
+	},
+
+	setIsAdmin: (val) => {
+		return sessionStorage.setItem('isAdmin', val)
 	},
 }

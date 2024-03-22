@@ -3,8 +3,7 @@ import Calendar from 'primevue/calendar';
 import Header from '@components/Header.vue';
 
 import { ref, onMounted } from 'vue'
-import { Auth } from '@/helpers'
-import { jwtStore } from '@/stores/auth'
+import { auth } from '@/helpers'
 import moment from 'moment'
 
 
@@ -16,7 +15,7 @@ const list = [
 
 const date = ref('19/03/24')
 let clients = ref([])
-let clientId = ref(0)
+let clientId = ref(-1)
 
 onMounted(async () => {
 	let data = await auth.post('get_employee_schedule', {
@@ -63,7 +62,7 @@ onMounted(async () => {
 			<Header name="Ханов Рамиль Юсупович" />
 
 			<div class="px-5 py-2">
-				<div v-if="clients.length > 0" class="mb-1">Клинет: {{ clients[clientId].name }}</div>
+				<div v-if="clientId >= 0 && clients.length > 0" class="mb-1">Клинет: {{ clients[clientId].name }}</div>
 				<RouterLink to="/worker/history" active-class="font-bold">
 					<PrimaryBtn class="me-8 mb-5">История посещений</PrimaryBtn>
 				</RouterLink>

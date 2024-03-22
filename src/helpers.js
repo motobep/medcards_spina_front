@@ -19,7 +19,7 @@ class Auth {
 		if (obj.headers === undefined) {
 			obj['headers'] = {}
 		}
-		obj.headers['Authorization'] = jwtStore.get();
+		obj.headers['Authorization'] = `Bearer ${jwtStore.get()}`;
 		let resp = await func(endpoint, obj)
 	
 		if (resp.status === 401) {
@@ -45,4 +45,4 @@ class Auth {
 	}
 }
 
-export const auth = Auth()
+export const auth = new Auth()

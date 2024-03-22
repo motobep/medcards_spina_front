@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { jwtStore } from '@/stores/auth'
+import { jwtStore, authStore } from '@/stores/auth'
 import { post } from '@/helpers'
 import router from '@/router'
 
@@ -12,15 +12,24 @@ let password = ref('')
 const endpoint = 'auth'
 
 async function submit() {
-	const data = await post(endpoint, {
+	const resp = await post(endpoint, {
 		headers: {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
-			login: name.value,
-			password: password.value,
+			// login: name.value,
+			// password: password.value,
+			login: '+7 (911) 565-52-43',
+			password: 'P@ssw0rd',
 		},)
 	})
+
+	if (!resp.ok) {
+		console.warn('resp status', resp.status)
+		return
+	}
+
+	let data = await resp.json()
 
 	if (data === null) return
 
@@ -30,9 +39,13 @@ async function submit() {
 	}
 
 	jwtStore.save(data.token)
-	console.log('jwt', jwtStore.get())
+	authStore.setIsAdmin(data.is_admin)
 
-	router.push({ path: '/worker/history' })
+	if (authStore.isAdmin()) {
+		router.push({ path: '/admin' })
+	} else {
+		router.push({ path: '/worker' })
+	}
 }
 </script>
 
