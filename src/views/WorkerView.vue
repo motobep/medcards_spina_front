@@ -4,12 +4,13 @@ import Header from '@components/Header.vue';
 
 import { ref, onMounted, watchEffect, computed } from 'vue'
 import { auth } from '@/helpers'
+import { authStore } from '@/stores/auth'
 import moment from 'moment'
 
-let client_cached = JSON.parse(sessionStorage.getItem('client'))
+let client_cached = authStore.get('client')
 
-let date_cached_text = sessionStorage.getItem('date')
-let company_id_cached = sessionStorage.getItem('company_id')
+let date_cached_text = authStore.get('date')
+let company_id_cached = authStore.get('company_id')
 console.log('cached client, date, company', client_cached, date_cached_text, company_id_cached)
 
 const companies = ref([])
@@ -50,23 +51,22 @@ watchEffect(async () => {
 
 let wasFirstCompanyChange = false
 watchEffect(async () => {
-	sessionStorage.setItem('company_id', company_selected.value)
+	authStore.set('company_id', company_selected.value)
 	if (wasFirstCompanyChange) {
-		console.log('comp changed')
 		client_selected.value = null_client
 	}
 	wasFirstCompanyChange = true
 })
 
 watchEffect(async () => {
-	sessionStorage.setItem('date', date_formatted.value)
+	authStore.set('date', date_formatted.value)
 	if (date_formatted.value !== date_cached_text) {
 		client_selected.value = null_client
 	}
 })
 
 watchEffect(async () => {
-	sessionStorage.setItem('client', JSON.stringify(client_selected.value))
+	authStore.set('client', client_selected.value)
 })
 
 async function fetch_companies() {
@@ -74,6 +74,8 @@ async function fetch_companies() {
 	if (data === null) return
 
 	companies.value = data
+	let ids = Object.keys(data).map(key => (data[key]))
+	if (company_selected.value === null) company_selected.value = ids[1]
 }
 
 async function fetch_clients(company_id, date) {

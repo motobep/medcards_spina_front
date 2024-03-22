@@ -5,6 +5,7 @@ import CreateServices from './CreateServices.vue';
 
 import { ref, onMounted } from 'vue'
 import { auth } from '@/helpers'
+import { authStore } from '@/stores/auth'
 
 
 const services = ref([])
@@ -14,12 +15,8 @@ let appointments = ref([])
 
 let diagnosis_text = ref('')
 
-let client = sessionStorage.getItem('client')
-let client_id = null
-
-if (client) {
-	client_id = JSON.parse(client).id
-}
+let client = authStore.get('client')
+let client_id = client?.id
 
 onMounted(async () => {
 	if (!client_id) return
@@ -30,9 +27,9 @@ onMounted(async () => {
 })
 
 async function get_services() {
-	let services_cached = localStorage.getItem('services')
+	let services_cached = authStore.get('services')
 	if (services_cached) {
-		services.value = JSON.parse(services_cached)
+		services.value = services_cached
 		return
 	}
 
@@ -40,7 +37,7 @@ async function get_services() {
 	if (!data) return
 
 	services.value = data
-	localStorage.setItem('services', JSON.stringify(services.value))
+	authStore.set('services', services.value)
 }
 
 async function fetch_services() {

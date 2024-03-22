@@ -1,22 +1,17 @@
 <script setup>
-// 	[
-// 	['14/11/23', 'Ханов', 'Ожидание', 'Коррекция'],
-// 	['14/10/23', 'Ханов 2', 'Ожидание 2', 'Коррекция 2'],
-// ]
-
-
 import { ref, onMounted, watchEffect } from 'vue'
 import { auth } from '@/helpers'
+import { authStore } from '@/stores/auth'
 
 let history = ref([])
 
-let company_id = sessionStorage.getItem('company_id')
-let client = sessionStorage.getItem('client')
+let company_id = authStore.get('company_id')
+let client = authStore.get('client')
 
 onMounted(async () => {
 	if (!company_id || !client) return
 
-	let client_id = JSON.parse(client).id
+	let client_id = client.id
 	await fetch_history(company_id, client_id)
 })
 
