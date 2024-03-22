@@ -56,7 +56,7 @@ let statuses = {
 				<td class="px-4">{{ statuses[el.attendance] }}</td>
 				<td class="px-4">{{ el.services[0].title }}</td>
 				<td class="px-4">
-					<PrimaryBtn class="mb-2" @click="$router.push(`/worker/history/medcard?date=${el.timestamp}&employee_id=${el.staff.user_id}`)">Посмотреть медкарту</PrimaryBtn>
+					<PrimaryBtn v-if="el.employee_id > -1" class="mb-2" @click="$router.push(`/worker/history/medcard?date=${el.timestamp}&employee_id=${el.employee_id}`)">Посмотреть медкарту</PrimaryBtn>
 				</td>
 			</tr>
 		</tbody>

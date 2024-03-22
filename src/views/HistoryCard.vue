@@ -19,17 +19,12 @@ if (url_params.has('date') && url_params.has('employee_id')) {
 }
 
 onMounted(async () => {
-	console.log(employee_id, date)
 	if (!employee_id || !date) return
-	console.log('yo')
 
-	const DAY = 60 * 60 * 24
-	let date_from = moment.unix(date - DAY * -20).format('DD.MM.YYYY')
-	let date_to = moment.unix(date + DAY * 10).format('DD.MM.YYYY')
+	let date_from = moment.unix(date).format('DD.MM.YYYY')
+	let date_to = moment.unix(date).add(1, 'd').format('DD.MM.YYYY')
 	await fetch_diagnoses_by_date(employee_id, date_from, date_to)
 	await fetch_appointments_by_date(employee_id, date_from, date_to)
-
-	console.log(employee_id, date)
 })
 
 async function fetch_diagnoses_by_date(employee_id, date_from, date_to) {
@@ -41,7 +36,10 @@ async function fetch_diagnoses_by_date(employee_id, date_from, date_to) {
 		})
 	})
 	if (data === null) return
-	diagnoses.value = data
+	diagnoses.value = data.map((el) => {
+		el.created_at = moment.unix(el.created_at).format('DD.MM.YYYY')
+		return el
+	})
 }
 
 async function fetch_appointments_by_date(employee_id, date_from, date_to) {
@@ -54,6 +52,7 @@ async function fetch_appointments_by_date(employee_id, date_from, date_to) {
 	})
 	if (data === null) return
 	appointments.value = data.map((el) => {
+		el.created_at = moment.unix(el.created_at).format('DD.MM.YYYY')
 		el.service = el.service_name
 		el.amount = el.count
 		el.visited = el.visit_count
@@ -73,7 +72,7 @@ async function fetch_appointments_by_date(employee_id, date_from, date_to) {
 
 			<div class="mb-5">
 				<div class="font-bold mb-2">Назначения</div>
-				<Appointments :data="appointments" :use_accept="true" />
+				<Appointments :data="appointments" :use_accept="false" />
 			</div>
 		</div>
 	</div>

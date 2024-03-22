@@ -4,7 +4,6 @@ import { jwtStore, authStore } from '@/stores/auth'
 import { post } from '@/helpers'
 import router from '@/router'
 
-console.log('jwt', jwtStore.get())
 
 let name = ref('')
 let password = ref('')
@@ -18,10 +17,10 @@ async function submit() {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
-			// login: name.value,
-			// password: password.value,
-			login: '+7 (911) 565-52-43',
-			password: 'P@ssw0rd',
+			login: name.value,
+			password: password.value,
+			// login: '+7 (911) 565-52-43',
+			// password: 'P@ssw0rd',
 			// login: 'testadmin',
 			// password: '123123',
 		},)
@@ -41,7 +40,7 @@ async function submit() {
 	if (data === null) return
 
 	if (data.error !== '') {
-		console.log(data.error)
+		console.error(data.error)
 		return
 	}
 

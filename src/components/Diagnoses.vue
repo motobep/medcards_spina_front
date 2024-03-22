@@ -3,7 +3,7 @@ defineProps(['data'])
 </script>
 
 <template>
-	<table class="table-bordered table-gapped">
+	<table v-if="data.length > 0" class="table-bordered table-gapped">
 		<thead>
 			<tr>
 				<td>№</td>
@@ -21,4 +21,5 @@ defineProps(['data'])
 			</tr>
 		</tbody>
 	</table>
+	<div v-else>-</div>
 </template>

@@ -6,6 +6,7 @@ import CreateServices from './CreateServices.vue';
 import { ref, onMounted } from 'vue'
 import { auth } from '@/helpers'
 import { authStore } from '@/stores/auth'
+import moment from 'moment'
 
 
 const services = ref([])
@@ -52,7 +53,20 @@ async function fetch_diagnoses(client_id) {
 		})
 	})
 	if (data === null) return
-	diagnoses.value = data
+	diagnoses.value = data.map((el) => {
+		el.created_at = moment.unix(el.created_at).format('DD.MM.YYYY')
+		return el
+	}).sort(compare_idx_of_objects)
+}
+
+function compare_idx_of_objects(a, b) {
+	if ( a.id > b.id ){
+    return -1;
+  }
+  if ( a.id < b.id ){
+    return 1;
+  }
+  return 0;
 }
 
 async function fetch_appointments(client_id) {
@@ -63,11 +77,12 @@ async function fetch_appointments(client_id) {
 	})
 	if (data === null) return
 	appointments.value = data.map((el) => {
+		el.created_at = moment.unix(el.created_at).format('DD.MM.YYYY')
 		el.service = el.service_name
 		el.amount = el.count
 		el.visited = el.visit_count
 		return el
-	})
+	}).sort(compare_idx_of_objects)
 }
 
 async function add_diagnosis(client_id, text) {

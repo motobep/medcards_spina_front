@@ -8,11 +8,12 @@ import { auth } from '@/helpers'
 import moment from 'moment'
 
 
+let employee_name = 'Admin'
+
 const workers = ref([])
 
 let workerIdx = ref(-1)
 const dates = ref()
-
 
 const appointments = ref([])
 const overall = ref({
@@ -24,7 +25,6 @@ const overall = ref({
 
 onMounted(async () => {
 	let data = await auth.get('get_all_employees')
-	console.log(data)
 	if (data === null) return
 	workers.value = data
 })
@@ -51,7 +51,6 @@ async function chooseDate(date_from, date_to) {
 			date_to: date_to,
 		})
 	})
-	console.log(data)
 	if (data === null) return
 	appointments.value = data
 
@@ -73,7 +72,6 @@ function calcOverall(data) {
 		sum: sum,
 		bonus: 0.1 * sum,
 	}
-	console.log(overall.value)
 }
 </script>
 <template>
@@ -84,7 +82,7 @@ function calcOverall(data) {
 				:class="{ 'bg-gray-200 dark:bg-gray-600': workerIdx === idx }">{{ w.full_name }}</PrimaryBtn>
 		</div>
 		<div class="w-5/6">
-			<Header name="Admin" />
+			<Header :name="employee_name" />
 
 			<div class="px-5 py-2">
 				<div v-if="workerIdx >= 0" class="mb-5">Сотрудник: {{ workers[workerIdx].full_name }}</div>

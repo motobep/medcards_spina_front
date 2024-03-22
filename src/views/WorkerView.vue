@@ -8,13 +8,13 @@ import { authStore } from '@/stores/auth'
 import moment from 'moment'
 
 
-let employee_name = ref('')
+let employee_name = authStore.get('employee_name')
 
 let client_cached = authStore.get('client')
 
 let date_cached_text = authStore.get('date')
 let company_id_cached = authStore.get('company_id')
-console.log('cached client, date, company', client_cached, date_cached_text, company_id_cached)
+// console.log('cached client, date, company', client_cached, date_cached_text, company_id_cached)
 
 const companies = ref([])
 let company_selected = ref(company_id_cached)
@@ -46,7 +46,6 @@ let date_formatted = computed(() => {
 
 onMounted(async () => {
 	await fetch_companies()
-	employee_name.value = authStore.get('employee_name')
 })
 
 watchEffect(async () => {
@@ -95,8 +94,8 @@ async function fetch_clients(company_id, date) {
 	}
 
 	clients.value = data.map((el) => {
-		let date_start = moment.unix(el.timestamp)
-		let date_end = moment.unix(el.timestamp + el.length)
+		let date_start = moment.unix(el.timestamp).add(1, 'hours')
+		let date_end = moment.unix(el.timestamp + el.length).add(1, 'hours')
 		return {
 			id: el.client_id,
 			name: el.client_name,

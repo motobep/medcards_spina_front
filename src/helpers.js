@@ -32,7 +32,7 @@ class Auth {
 			let data = await resp.json()
 			return data
 		} else {
-			console.log('resp not ok')
+			console.warn('Response is not ok. Status:', resp.status)
 			return null
 		}
 	}

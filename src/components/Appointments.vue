@@ -1,11 +1,9 @@
 <script setup>
 defineProps(['data', 'accept_handler', 'use_accept'])
-
-import moment from 'moment'
 </script>
 
 <template>
-	<table class="table-bordered table-gapped">
+	<table v-if="data.length > 0" class="table-bordered table-gapped">
 		<thead>
 			<tr>
 				<td>№</td>
@@ -21,7 +19,7 @@ import moment from 'moment'
 			<tr v-for="entity in data">
 				<td>{{ entity.id }}</td>
 				<td>{{ entity.creator_name }}</td>
-				<td>{{ moment(entity.created_at).format('DD.MM.YYYY') }}</td>
+				<td>{{ entity.created_at }}</td>
 				<td>{{ entity.service }}</td>
 				<td>{{ entity.amount }}</td>
 				<td>{{ entity.visited }}</td>
@@ -29,4 +27,5 @@ import moment from 'moment'
 			</tr>
 		</tbody>
 	</table>
+	<div v-else>-</div>
 </template>
