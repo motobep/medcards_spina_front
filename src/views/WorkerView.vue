@@ -2,39 +2,78 @@
 import Calendar from 'primevue/calendar';
 import Header from '@components/Header.vue';
 
-import { ref, onMounted, watchEffect } from 'vue'
+import { ref, onMounted, watchEffect, computed } from 'vue'
 import { auth } from '@/helpers'
 import moment from 'moment'
 
+let client_cached = JSON.parse(sessionStorage.getItem('client'))
+
+let date_cached_text = sessionStorage.getItem('date')
+let company_id_cached = sessionStorage.getItem('company_id')
+console.log('cached client, date, company', client_cached, date_cached_text, company_id_cached)
 
 const companies = ref([])
-let company_selected = ref('')
+let company_selected = ref(company_id_cached)
 
-const date = ref()
+let date_cached =  moment(date_cached_text, 'DD.MM.YYYY')
+let date_default = date_cached.isValid() ? date_cached.toDate() : null
+const date = ref(date_default)
 let clients = ref([])
-let client_id = ref(-1)
+
+let null_client = {
+	id: 0,
+	name: '',
+	time_start: ``,
+	time_end: ``,
+	service: '',
+}
+
+let client_default = client_cached ?? null_client
+
+let client_selected = ref(client_default)
 
 function format_date(date) {
 	return moment(date).format('DD.MM.YYYY')
 }
 
+let date_formatted = computed(() => {
+	return format_date(date.value)
+})
+
 onMounted(async () => {
 	await fetch_companies()
-	console.log(format_date(date.value))
 })
 
 watchEffect(async () => {
 	await fetch_clients(company_selected.value, format_date(date.value))
 })
 
+let wasFirstCompanyChange = false
+watchEffect(async () => {
+	sessionStorage.setItem('company_id', company_selected.value)
+	if (wasFirstCompanyChange) {
+		console.log('comp changed')
+		client_selected.value = null_client
+	}
+	wasFirstCompanyChange = true
+})
+
+watchEffect(async () => {
+	sessionStorage.setItem('date', date_formatted.value)
+	if (date_formatted.value !== date_cached_text) {
+		client_selected.value = null_client
+	}
+})
+
+watchEffect(async () => {
+	sessionStorage.setItem('client', JSON.stringify(client_selected.value))
+})
 
 async function fetch_companies() {
 	let data = await auth.get('get_companies')
 	if (data === null) return
 
 	companies.value = data
-	let values = Object.keys(companies.value).map((key) => companies.value[key])
-	company_selected.value = values[1]
 }
 
 async function fetch_clients(company_id, date) {
@@ -53,7 +92,7 @@ async function fetch_clients(company_id, date) {
 		let date_start = moment.unix(el.timestamp)
 		let date_end = moment.unix(el.timestamp + el.length)
 		return {
-			client_id: el.client_id,
+			id: el.client_id,
 			name: el.client_name,
 			time_start: `${date_start.format('HH:mm')}`,
 			time_end: `${date_end.format('HH:mm')}`,
@@ -70,14 +109,11 @@ async function fetch_clients(company_id, date) {
 				</option>
 			</select>
 
-			<!-- {{ company_selected }}<br> -->
-			<!-- {{ format_date(date) }};<br> -->
-			<!-- {{ date }} -->
 			<Calendar class="mb-2" v-model="date" inline dateFormat="dd.MM.YYYY" />
 
 			<div class="overflow-y-auto">
-				<div v-for="(item, idx) in clients" class="border border-gray-500 rounded-lg p-2 mt-4 cursor-pointer"
-					:class="{ 'bg-gray-200 dark:bg-gray-700': client_id === idx }" @click="client_id = idx">
+				<div v-for="item in clients" class="border border-gray-500 rounded-lg p-2 mt-4 cursor-pointer"
+					:class="{ 'bg-gray-200 dark:bg-gray-700': item.id === client_selected.id }" @click="client_selected = item">
 					<div class="border-b border-gray-400 mb-1">{{ item.time_start }} - {{ item.time_end }}</div>
 					<div class="mb-2">{{ item.service }}</div>
 					<div>{{ item.name }}</div>
@@ -88,7 +124,7 @@ async function fetch_clients(company_id, date) {
 			<Header name="Ханов Рамиль Юсупович" />
 
 			<div class="px-5 py-2">
-				<div v-if="client_id >= 0 && clients.length > 0" class="mb-1">Клинет: {{ clients[client_id].name }}</div>
+				<div v-if="client_selected.name && clients.length > 0" class="mb-1">Клинет: {{ client_selected.name }}</div>
 				<RouterLink to="/worker/history" active-class="font-bold">
 					<PrimaryBtn class="me-8 mb-5">История посещений</PrimaryBtn>
 				</RouterLink>
@@ -97,7 +133,7 @@ async function fetch_clients(company_id, date) {
 					<PrimaryBtn>Медкарта</PrimaryBtn>
 				</RouterLink>
 
-				<div class="border rounded-lg p-4 ">
+				<div v-if="client_selected.id && company_selected" class="border rounded-lg p-4 ">
 					<RouterView />
 				</div>
 

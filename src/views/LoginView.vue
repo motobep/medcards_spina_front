@@ -44,7 +44,7 @@ async function submit() {
 	if (authStore.isAdmin()) {
 		router.push({ path: '/admin' })
 	} else {
-		router.push({ path: '/worker' })
+		router.push({ path: '/worker/history' })
 	}
 }
 </script>

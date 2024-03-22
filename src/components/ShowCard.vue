@@ -5,42 +5,66 @@ import CreateServices from './CreateServices.vue';
 
 import { ref, onMounted } from 'vue'
 import { auth } from '@/helpers'
-import { jwtStore } from '@/stores/auth'
 
 
-const services = [
-	'Услуга 1',
-	'Услуга 2',
-	'Услуга 3',
-]
+const services = ref([])
 
 let diagnoses = ref([])
 let appointments = ref([])
 
 let diagnosis_text = ref('')
 
+let client = sessionStorage.getItem('client')
+let client_id = null
+
+if (client) {
+	client_id = JSON.parse(client).id
+}
+
 onMounted(async () => {
-	await fetch_diagnoses()
-	await fetch_appointments()
+	if (!client_id) return
+
+	await get_services()
+	await fetch_diagnoses(client_id)
+	await fetch_appointments(client_id)
 })
 
-async function fetch_diagnoses() {
-	let resp = await auth.post('get_diagnosis', {
+async function get_services() {
+	let services_cached = localStorage.getItem('services')
+	if (services_cached) {
+		services.value = JSON.parse(services_cached)
+		return
+	}
+
+	let data = await fetch_services()
+	if (!data) return
+
+	services.value = data
+	localStorage.setItem('services', JSON.stringify(services.value))
+}
+
+async function fetch_services() {
+	let data = await auth.get('get_services')
+	return data?.map((el) => el.service_name)
+}
+
+async function fetch_diagnoses(client_id) {
+	let data = await auth.post('get_diagnoses', {
 		body: JSON.stringify({
-			client_id: '1',
+			client_id: client_id,
 		})
 	})
-	let data = await resp.json()
+	if (data === null) return
 	diagnoses.value = data
 }
 
-async function fetch_appointments() {
-	let resp = await auth.post('get_appointments', {
+async function fetch_appointments(client_id) {
+	let data = await auth.post('get_appointments', {
 		body: JSON.stringify({
-			client_id: '5',
+			client_id: client_id,
 		})
 	})
-	let data = await resp.json()
+	if (data === null) return
 	appointments.value = data.map((el) => {
 		el.service = el.service_name
 		el.amount = el.count
@@ -49,42 +73,44 @@ async function fetch_appointments() {
 	})
 }
 
-async function add_diagnosis(text) {
-	let resp = await auth.post('add_diagnosis', {
+async function add_diagnosis(client_id, text) {
+	let data = await auth.post('add_diagnosis', {
 		body: JSON.stringify({
-			client_id: '5',
+			client_id: client_id,
 			text: text,
 		})
 	})
-	let data = await resp.json()
-	console.log('diagnosis', data)
-	// if (data.error === "") {
-	// 	await fetch_diagnoses()
-	// }
+	if (data === null) return
+
+	if (data.error === "") {
+		await fetch_diagnoses(client_id)
+	}
 }
 
-async function add_appointment(service, amount) {
+async function add_appointment(client_id, service, amount) {
 	if (service === '' || amount <= 0) return
-	let resp = await auth.post('add_appointment', {
+	let data = await auth.post('add_appointment', {
 		body: JSON.stringify({
-			client_id: '5',
+			client_id: client_id,
 			service_name: service,
 			count: amount,
 		})
 	})
-	let data = await resp.json()
+	if (data === null) return
+
 	if (data.error === "") {
-		await fetch_appointments()
+		await fetch_appointments(client_id)
 	}
 }
 
 async function accept_visit(id) {
-	let resp = await auth.post('accept_visit', {
+	let data = await auth.post('accept_visit', {
 		body: JSON.stringify({
 			appointment_id: id,
 		})
 	})
-	let data = await resp.json()
+	if (data === null) return
+
 	if (data.error === "") {
 		let found = appointments.value.find((el) => el.id === id)
 		found.visited++
@@ -95,9 +121,9 @@ async function accept_visit(id) {
 <template>
 	<div class="w-[1000px]">
 		<div class="font-bold mb-2">Новый диагноз</div>
-		<textarea v-model="diagnosis_text" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700" id="text" name="content"
-			rows="3">Новый диагноз</textarea>
-		<PrimaryBtn @click="add_diagnosis(diagnosis_text)" class="mb-5">Добавить</PrimaryBtn>
+		<textarea v-model="diagnosis_text" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700" id="text"
+			name="content" rows="3">Новый диагноз</textarea>
+		<PrimaryBtn @click="add_diagnosis(client_id, diagnosis_text)" class="mb-5">Добавить</PrimaryBtn>
 
 		<div class="font-bold mb-2">Диагнозы</div>
 		<Diagnoses :data="diagnoses" class="mb-5" />
@@ -106,7 +132,7 @@ async function accept_visit(id) {
 
 		<div class="mb-5">
 			<div class="font-bold mb-2">Добавить назначение</div>
-			<CreateServices :list="services" :add_handler="add_appointment" />
+			<CreateServices :list="services" :add_handler="(service, amount) => add_appointment(client_id, service, amount)" />
 
 			<div class="mb-4"></div>
 
