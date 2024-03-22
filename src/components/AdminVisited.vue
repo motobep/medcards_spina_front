@@ -9,16 +9,16 @@ defineProps(['data'])
 				<td>№</td>
 				<td>Услуга</td>
 				<td>Назначено</td>
-				<td>Сходил</td>
+				<td>Посещено</td>
 				<td>Сумма приемов</td>
 			</tr>
 		</thead>
 		<tbody>
 			<tr v-for="entity in data">
 				<td>{{ entity.id }}</td>
-				<td>{{ entity.service }}</td>
-				<td>{{ entity.appointments }}</td>
-				<td>{{ entity.visited }}</td>
+				<td>{{ entity.service_name }}</td>
+				<td>{{ entity.count }}</td>
+				<td>{{ entity.visit_count }}</td>
 				<td>{{ entity.sum }}</td>
 			</tr>
 		</tbody>
