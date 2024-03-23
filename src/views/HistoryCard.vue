@@ -9,6 +9,7 @@ import moment from 'moment'
 
 let diagnoses = ref([])
 let appointments = ref([])
+let title = ''
 
 let date, employee_id
 
@@ -16,6 +17,7 @@ let url_params = new URLSearchParams(window.location.search);
 if (url_params.has('date') && url_params.has('employee_id')) {
 	date = parseInt(url_params.get('date'))
 	employee_id = parseInt(url_params.get('employee_id'))
+	title = `Медкарта за ${moment.unix(date).format('DD.MM.YYYY')}`
 }
 
 onMounted(async () => {
@@ -64,6 +66,7 @@ async function fetch_appointments_by_date(employee_id, date_from, date_to) {
 <template>
 	<div class="container mx-auto py-8">
 		<button @click="$router.go(-1)" class="text-2xl cursor-pointer mb-4">&larr;</button>
+		<h1 class="text-xl font-bold inline-block ms-4">{{ title }}</h1>
 		<div class="">
 			<div class="font-bold mb-2">Диагнозы</div>
 			<Diagnoses :data="diagnoses" class="mb-5" />

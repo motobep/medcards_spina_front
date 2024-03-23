@@ -27,14 +27,18 @@ async function fetch_history(company_id, client_id) {
 	)
 
 	if (data === null) return
-	history.value = data
+	history.value = data.sort((a, b) => {
+		if (a.timestamp > b.timestamp) return -1
+		if (a.timestamp < b.timestamp) return 1
+		return 0
+	})
 }
 
 let statuses = {
 	'-1': 'Не пришёл',
 	'0': 'Ожидание',
 	'1': 'Пришёл',
-	'2': 'f',
+	'2': 'Подтвердил',
 }
 </script>
 
@@ -46,7 +50,7 @@ let statuses = {
 				<td class="px-4">Сотрудник</td>
 				<td class="px-4">Статус</td>
 				<td class="px-4">Услуга</td>
-				<td class="px-4">Мед арты</td>
+				<td class="px-4">Действия</td>
 			</tr>
 		</thead>
 		<tbody>
