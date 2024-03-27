@@ -8,20 +8,20 @@ let diagnosis_text = ref('')
 let service = ref('')
 let employee_id = ref('')
 
-let empoyees = ref([])
+let employees = ref([])
 
 onMounted(async () => {
 	let data = await auth.get('get_all_employees')
 	if (data === null) return
-	empoyees.value = data.filter((el) => el.is_admin === false)
+	employees.value = data.filter((el) => el.is_admin === false)
 })
 
-async function add_diagnosis(client_id, text, empoyee_id, service) {
+async function add_diagnosis(client_id, text, employee_id, service) {
 	let data = await auth.post('add_diagnosis', {
 		body: JSON.stringify({
 			client_id: client_id,
 			text: text,
-			by_empoyee_id: empoyee_id,
+			by_employee_id: employee_id,
 			service_name: service,
 		})
 	})
@@ -44,7 +44,7 @@ async function add_diagnosis(client_id, text, empoyee_id, service) {
 
 	<select v-model="employee_id" class="px-2 py-1 rounded-lg dark:bg-gray-700 me-5">
 		<option disabled value="" selected>Выбрать сотрудника</option>
-		<option v-for="el in empoyees" class="" :value="el.id">{{ el.full_name }}</option>
+		<option v-for="el in employees" class="" :value="el.id">{{ el.full_name }}</option>
 	</select>
 
 	<PrimaryBtn @click="add_diagnosis(client_id, diagnosis_text, employee_id, service)" class="block mb-5">Добавить</PrimaryBtn>
