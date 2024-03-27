@@ -61,3 +61,20 @@ body {
     --surface-950: 3 6 23;
 }
 
+@media (prefers-color-scheme: dark) {
+	.p-datepicker {
+		background: rgb(55 65 81 / var(--tw-bg-opacity));
+		color: #ffffff;
+	}
+
+	.p-datepicker .p-datepicker-header {
+		background: rgb(55 65 81 / var(--tw-bg-opacity));
+		color: #ffffff;
+	}
+
+	.p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
+		background: #fff;
+		color: #333;
+	}
+}
+

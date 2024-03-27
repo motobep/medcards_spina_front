@@ -14,8 +14,8 @@ let amount = ref(0)
 			<option v-for="(el, idx) in list" class="" :value="el">{{ el }}</option>
 		</select>
 
-		<input v-model="amount" type="number" class="w-[130px] rounded-lg py-1 px-2 me-5" placeholder="Количество">
+		<input v-model="amount" type="number" class="w-[130px] bg-gray-200 dark:bg-gray-700 rounded-lg py-1 px-2 me-5" placeholder="Количество">
 
-		<span @click="add_handler(service, amount)" class="text-lg font-bold cursor-pointer">+</span>
+		<span @click="add_handler(service, amount)" class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">+</span>
 	</div>
 </template>

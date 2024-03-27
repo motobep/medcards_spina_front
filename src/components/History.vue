@@ -58,9 +58,11 @@ let statuses = {
 				<td class="px-4">{{ moment.unix(el.timestamp).format('DD.MM.YYYY') }}</td>
 				<td class="px-4">{{ el.staff.name }}</td>
 				<td class="px-4">{{ statuses[el.attendance] }}</td>
-				<td class="px-4">{{ el.services[0].title }}</td>
+				<td class="px-4">{{ el.services && el.services.length > 0 ? el.services[0].title : '-' }}</td>
 				<td class="px-4">
-					<PrimaryBtn v-if="el.employee_id > -1" class="mb-2" @click="$router.push(`/worker/history/medcard?date=${el.timestamp}&employee_id=${el.employee_id}`)">Посмотреть медкарту</PrimaryBtn>
+					<PrimaryBtn v-if="el.employee_id > -1" class="mb-2"
+						@click="$router.push(`/worker/history/medcard?date=${el.timestamp}&employee_id=${el.employee_id}`)">Посмотреть
+						медкарту</PrimaryBtn>
 				</td>
 			</tr>
 		</tbody>

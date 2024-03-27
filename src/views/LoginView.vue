@@ -17,10 +17,10 @@ async function submit() {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
-			login: name.value,
-			password: password.value,
-			// login: '+7 (911) 565-52-43',
-			// password: 'P@ssw0rd',
+			// login: name.value,
+			// password: password.value,
+			login: '+7 (911) 565-52-43',
+			password: 'P@ssw0rd',
 			// login: 'testadmin',
 			// password: '123123',
 		},)

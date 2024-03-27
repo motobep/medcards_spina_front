@@ -1,7 +1,8 @@
 <script setup>
-import Diagnoses from './Diagnoses.vue';
-import Appointments from './Appointments.vue';
-import CreateServices from './CreateServices.vue';
+import Diagnoses from '@components/Diagnoses.vue';
+import Appointments from '@components/Appointments.vue';
+import CreateServices from '@components/CreateServices.vue';
+import AddDiagnosis from '@components/AddDiagnosis.vue'
 
 import { ref, onMounted } from 'vue'
 import { auth } from '@/helpers'
@@ -13,8 +14,6 @@ const services = ref([])
 
 let diagnoses = ref([])
 let appointments = ref([])
-
-let diagnosis_text = ref('')
 
 let client = authStore.get('client')
 let client_id = client?.id
@@ -60,13 +59,9 @@ async function fetch_diagnoses(client_id) {
 }
 
 function compare_idx_of_objects(a, b) {
-	if ( a.id > b.id ){
-    return -1;
-  }
-  if ( a.id < b.id ){
-    return 1;
-  }
-  return 0;
+	if (a.id > b.id) return -1
+	if (a.id < b.id) return 1
+	return 0
 }
 
 async function fetch_appointments(client_id) {
@@ -83,20 +78,6 @@ async function fetch_appointments(client_id) {
 		el.visited = el.visit_count
 		return el
 	}).sort(compare_idx_of_objects)
-}
-
-async function add_diagnosis(client_id, text) {
-	let data = await auth.post('add_diagnosis', {
-		body: JSON.stringify({
-			client_id: client_id,
-			text: text,
-		})
-	})
-	if (data === null) return
-
-	if (data.error === "") {
-		await fetch_diagnoses(client_id)
-	}
 }
 
 async function add_appointment(client_id, service, amount) {
@@ -133,9 +114,9 @@ async function accept_visit(id) {
 <template>
 	<div class="w-[1000px]">
 		<div class="font-bold mb-2">Новый диагноз</div>
-		<textarea v-model="diagnosis_text" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700" id="text"
-			name="content" rows="3">Новый диагноз</textarea>
-		<PrimaryBtn @click="add_diagnosis(client_id, diagnosis_text)" class="mb-5">Добавить</PrimaryBtn>
+		<AddDiagnosis :services="services" :client_id="client_id"
+			:callback="() => fetch_diagnoses(client_id) "/>
+
 
 		<div class="font-bold mb-2">Диагнозы</div>
 		<Diagnoses :data="diagnoses" class="mb-5" />
@@ -149,7 +130,7 @@ async function accept_visit(id) {
 			<div class="mb-4"></div>
 
 			<div class="font-bold mb-2">Назначения</div>
-			<Appointments :data="appointments" :accept_handler="accept_visit" :use_accept="true" />
+			<Appointments :data="appointments" :accept_handler="accept_visit" :use_accept="false" />
 
 		</div>
 	</div>
