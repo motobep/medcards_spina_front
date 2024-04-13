@@ -1,18 +1,19 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watchEffect } from 'vue'
 import { auth } from '@/helpers'
-import { authStore } from '@/stores/auth'
+import { authStore, useClientStore } from '@/stores/auth'
 import moment from 'moment'
+
+const clientStore = useClientStore()
 
 let history = ref([])
 
 let company_id = authStore.get('company_id')
-let client = authStore.get('client')
 
-onMounted(async () => {
-	if (!company_id || !client) return
+watchEffect(async () => {
+	if (!company_id || !clientStore.client) return
 
-	let client_id = client.id
+	let client_id = clientStore.client.id
 	await fetch_history(company_id, client_id)
 })
 

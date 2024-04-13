@@ -4,26 +4,30 @@ import Appointments from '@components/Appointments.vue';
 import CreateServices from '@components/CreateServices.vue';
 import AddDiagnosis from '@components/AddDiagnosis.vue'
 
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watchEffect, computed } from 'vue'
 import { auth } from '@/helpers'
-import { authStore } from '@/stores/auth'
+import { authStore, useClientStore } from '@/stores/auth'
 import moment from 'moment'
 
+const clientStore = useClientStore()
 
 const services = ref([])
 
 let diagnoses = ref([])
 let appointments = ref([])
 
-let client = authStore.get('client')
-let client_id = client?.id
+let client_id = computed(() => {
+	let c = clientStore.client
+	return c?.id
+})
 
-onMounted(async () => {
-	if (!client_id) return
+// triggers twice. first time on load
+watchEffect(async () => {
+	if (!client_id.value) return
 
 	await get_services()
-	await fetch_diagnoses(client_id)
-	await fetch_appointments(client_id)
+	await fetch_diagnoses(client_id.value)
+	await fetch_appointments(client_id.value)
 })
 
 async function get_services() {
