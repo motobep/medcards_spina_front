@@ -1,6 +1,3 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
-
 export const jwtStore = {
 	get: () => {
 		return sessionStorage.getItem('jwt')
@@ -27,6 +24,7 @@ class AuthStore {
 	get(key) {
 		let val = sessionStorage.getItem(key)
 		if (!val) return val
+		// console.log('val parsed', key, val)
 		let j = JSON.parse(val)
 		if ('_plain_value' in j) {
 			return j['_plain_value']
@@ -36,37 +34,14 @@ class AuthStore {
 
 	set(key, val) {
 		let v = val
+		// console.log('setted', val)
 		if (typeof val !== 'object' || val === null) {
 			v = { '_plain_value': val }
 		}
 		v = JSON.stringify(v)
+		// console.log('setted v', v)
 		return sessionStorage.setItem(key, v)
 	}
 }
 
 export const authStore = new AuthStore()
-
-export const useClientStore = defineStore('counter', () => {
-	let client_cached = authStore.get('client')
-	let null_client = {
-		id: 0,
-		name: '',
-		time_start: ``,
-		time_end: ``,
-		service: '',
-	}
-	let client_default = client_cached ?? null_client
-
-	const client = ref(client_default)
-	function set(val) {
-		authStore.set('client', val)
-		client.value = val
-	}
-
-	function setNull() {
-		set(null_client)
-	}
-
-	return { client, set, setNull }
-})
-
