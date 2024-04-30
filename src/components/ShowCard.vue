@@ -123,7 +123,7 @@ async function accept_visit(id) {
 
 
 		<div class="font-bold mb-2">Диагнозы</div>
-		<Diagnoses :data="diagnoses" class="mb-5" />
+		<Diagnoses :data="diagnoses" :fetch_appointments="() => fetch_appointments(client_id) " :fetch_diagnoses="() => fetch_diagnoses(client_id) " class="mb-5" />
 
 		<hr class="mb-8">
 
