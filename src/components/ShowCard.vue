@@ -40,7 +40,12 @@ async function get_services() {
 	let data = await fetch_services()
 	if (!data) return
 
-	services.value = data
+	services.value = data.sort((a, b) => {
+		if (a > b) return 1;
+		if (a < b) return -1
+		return 0
+	})
+
 	authStore.set('services', services.value)
 }
 
