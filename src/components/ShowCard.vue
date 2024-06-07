@@ -126,10 +126,10 @@ async function accept_visit(id) {
 		<AddDiagnosis :services="services" :client_id="client_id"
 			:callback="() => fetch_diagnoses(client_id) "/>
 
-
+		<div class="mb-5">
 		<div class="font-bold mb-2">Диагнозы</div>
 		<Diagnoses :data="diagnoses" :fetch_appointments="() => fetch_appointments(client_id) " :fetch_diagnoses="() => fetch_diagnoses(client_id) " class="mb-5" />
-
+		</div>
 		<hr class="mb-8">
 
 		<div class="mb-5">

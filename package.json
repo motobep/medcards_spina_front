@@ -14,7 +14,9 @@
     "primeicons": "^7.0.0",
     "primevue": "^3.49.1",
     "vue": "^3.4.19",
-    "vue-router": "^4.3.0"
+    "vue-multiselect": "^3.0.0",
+    "vue-router": "^4.3.0",
+    "vue-select": "^4.0.0-beta.6"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",

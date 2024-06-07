@@ -3,6 +3,7 @@ const props = defineProps(['services', 'client_id', 'callback'])
 
 import { ref, onMounted } from 'vue'
 import { auth } from '@/helpers'
+import 'vue-select/dist/vue-select.css';
 
 let diagnosis_text = ref('')
 let service = ref('')
@@ -34,18 +35,17 @@ async function add_diagnosis(client_id, text, employee_id, service) {
 </script>
 
 <template>
-	<textarea v-model="diagnosis_text" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700" id="text"
-		name="content" rows="3">Новый диагноз</textarea>
+		<textarea v-model="diagnosis_text" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700" id="text"
+			name="content" rows="3">Новый диагноз</textarea>
+	<div>
+		<v-select  v-model="service" color="primary" :options="services" class="px-2 py-1 rounded-lg me-5 mb-3 mt-4 dark:bg-gray-700 dark:text-black">
+		</v-select>
 
-	<select v-model="service" class="px-2 py-1 rounded-lg dark:bg-gray-700 me-5 mt-4">
-		<option disabled value="" selected>Выбрать услугу</option>
-		<option v-for="el in services" class="" :value="el">{{ el }}</option>
-	</select>
+		<select v-model="employee_id" class="px-2 py-1 rounded-lg dark:bg-gray-700 me-5">
+			<option disabled value="" selected>Выбрать сотрудника</option>
+			<option v-for="el in employees" class="" :value="el.id">{{ el.full_name }}</option>
+		</select>
 
-	<select v-model="employee_id" class="px-2 py-1 rounded-lg dark:bg-gray-700 me-5">
-		<option disabled value="" selected>Выбрать сотрудника</option>
-		<option v-for="el in employees" class="" :value="el.id">{{ el.full_name }}</option>
-	</select>
-
-	<PrimaryBtn @click="add_diagnosis(client_id, diagnosis_text, employee_id, service)" class="block mb-5">Добавить</PrimaryBtn>
+		<PrimaryBtn @click="add_diagnosis(client_id, diagnosis_text, employee_id, service)" class="block mb-5">Добавить</PrimaryBtn>
+	</div>
 </template>

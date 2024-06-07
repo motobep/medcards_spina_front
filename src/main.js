@@ -9,9 +9,13 @@ import 'primevue/resources/themes/aura-light-indigo/theme.css';
 
 import PrimaryBtn from '@components/buttons/PrimaryBtn.vue'
 
+import vSelect from 'vue-select'
+
+
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
+app.component('v-select', vSelect)
 
 app.use(router)
 app.use(PrimeVue, {
