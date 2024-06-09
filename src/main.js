@@ -6,10 +6,21 @@ import router from './router'
 import PrimeVue, { defaultOptions } from 'primevue/config';
 
 import 'primevue/resources/themes/aura-light-indigo/theme.css';
+import '../node_modules/flowbite-vue/dist/index.css'
 
 import PrimaryBtn from '@components/buttons/PrimaryBtn.vue'
 
 import vSelect from 'vue-select'
+
+if (
+	localStorage.getItem('color-theme') === 'dark' ||
+	(!('color-theme' in localStorage) &&
+		window.matchMedia('(prefers-color-scheme: dark)').matches)
+) {
+	document.documentElement.classList.add('dark');
+} else {
+	document.documentElement.classList.remove('dark');
+}
 
 
 const pinia = createPinia()

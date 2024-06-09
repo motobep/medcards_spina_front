@@ -7,6 +7,7 @@ import HistoryCard from '@views/HistoryCard.vue';
 
 import ShowCard from '@components/ShowCard.vue';
 import History from '@components/History.vue';
+import HealthComplaints from '@components/HealthComplaints.vue'
 
 import { jwtStore } from '@/stores/auth'
 

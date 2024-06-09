@@ -3,6 +3,7 @@ import Diagnoses from '@components/Diagnoses.vue';
 import Appointments from '@components/Appointments.vue';
 import CreateServices from '@components/CreateServices.vue';
 import AddDiagnosis from '@components/AddDiagnosis.vue'
+import Dropdown from '@components/Dropdown.vue'
 
 import { ref, onMounted, watchEffect, computed } from 'vue'
 import { auth } from '@/helpers'
@@ -122,6 +123,9 @@ async function accept_visit(id) {
 
 <template>
 	<div class="w-[1000px]">
+		<div class="mb-5"/>
+		<Dropdown/>
+		<div class="mb-8"/>
 		<div class="font-bold mb-2">Новый диагноз</div>
 		<AddDiagnosis :services="services" :client_id="client_id"
 			:callback="() => fetch_diagnoses(client_id) "/>

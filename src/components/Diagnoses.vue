@@ -84,7 +84,7 @@ function edit_diagnosis_text(i) {
 				<td>{{ entity.creator_name }}</td>
 				<td @dblclick = "editedTodo = i; editedText = entity.text;">
 					<label v-show = "editedTodo != i"> {{ entity.text }} </label>
-					<textarea v-if = "editedTodo == i" v-model = "editedText" @keyup.enter = "edit_diagnosis_text(i);" v-on:blur= "edit_diagnosis_text(i)"/>
+					<textarea class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700" v-if = "editedTodo == i" v-model = "editedText" @keyup.enter = "edit_diagnosis_text(i);" v-on:blur= "edit_diagnosis_text(i)"/>
 					
 				</td>
 				<td><Button icon="pi pi-trash" @click="delete_diagnosis(client_id, entity.id)" /> | <Button icon="pi pi-save" @click="save_diagnosis(entity.id, entity.text)" /></td>
