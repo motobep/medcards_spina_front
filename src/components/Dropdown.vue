@@ -109,17 +109,3 @@
 	};
 </script>
 
-<style scoped>
-	.slide-enter-active .slide-leave-active {
-			transition: opacity 0.5s;
-			transform: translateY(-100%);
-  		transition: transform 1s linear;
-	}
-	.slide-enter, .slide-leave-to /* .fade-leave-active in <2.1.8 */ {
-  		opacity: 0;
-	}
-	.animated {
-		transform: translateY(-100%);
-		transition: transform 1s linear;
-	}
-</style>

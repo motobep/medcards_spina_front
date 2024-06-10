@@ -7,53 +7,53 @@
             <div class="flex items-center me-4">
                 <input
                 type="checkbox"
-                id="text"
+                id="neurologist"
                 true-value="yes"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 false-value="no" />
-                <label for="text" class="ms-2">Невролог</label>
+                <label for="neurologist" class="ms-2">Невролог</label>
             </div>
 
             <div class="flex items-center me-4">
 
                 <input
                 type="checkbox"
-                id="text"
+                id="therapist"
                 true-value="yes"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 false-value="no" />
-                <label for="text" class="ms-2">Терапевт</label>
+                <label for="therapist" class="ms-2">Терапевт</label>
 
             </div>
 
             <div class="flex items-center me-4">
                 <input
                 type="checkbox"
-                id="text"
+                id="pediatrician"
                 true-value="yes"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 false-value="no" />
-                <label for="text" class="ms-2">Педиатр</label>
+                <label for="pediatrician" class="ms-2">Педиатр</label>
             </div>
 
             <div class="flex items-center me-4">
                 <input
                 type="checkbox"
-                id="text"
+                id="orthopedist"
                 true-value="yes"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 false-value="no" />
-                <label for="text" class="ms-2">Ортопед</label>
+                <label for="orthopedist" class="ms-2">Ортопед</label>
             </div>
 
             <div class="flex items-center me-4">
                 <input
                 type="checkbox"
-                id="text"
+                id="dentist"
                 true-value="yes"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 false-value="no" />
-                <label for="text" class="ms-2">Стоматолог</label>
+                <label for="dentist" class="ms-2">Стоматолог</label>
             </div>
 
             
@@ -101,5 +101,9 @@
 
         <textarea class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700" placeholder="Комментарий записи..."/>
         <div class="mb-4"/>
+
+        <div class="flex justify-end">
+			<PrimaryBtn class="block mb-5 content-end">Сохранить</PrimaryBtn>
+		</div>
     </div>
 </template>

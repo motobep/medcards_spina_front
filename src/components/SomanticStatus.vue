@@ -200,5 +200,9 @@ let body_mass_index = computed(() => {
 			</div>
 			<span class="ml-2">.</span>
 		</div>
+
+		<div class="flex justify-end">
+			<PrimaryBtn class="block mb-5 content-end">Сохранить</PrimaryBtn>
+		</div>
 	</div>
 </template>
