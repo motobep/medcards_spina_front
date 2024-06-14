@@ -1,11 +1,15 @@
+<script setup>
+const props = defineProps(['client_id'])
+</script>
+
 <template>
 	<div>
 	
 			<span @click="toggleComplaints" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Жалобы</span>
-			<div class="mb-4 animated"/>
+			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showComplaints" class="border rounded-lg p-3">
-					<HealthComplaints/>
+					<HealthComplaints :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -109,3 +113,7 @@
 	};
 </script>
 
+<style scoped>
+
+
+</style>

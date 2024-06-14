@@ -124,7 +124,7 @@ async function accept_visit(id) {
 <template>
 	<div class="w-[1000px]">
 		<div class="mb-5"/>
-		<Dropdown/>
+		<Dropdown :client_id="client_id"/>
 		<div class="mb-8"/>
 		<div class="font-bold mb-2">Новый диагноз</div>
 		<AddDiagnosis :services="services" :client_id="client_id"

@@ -5,6 +5,7 @@ import { resolve } from 'path'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 
+
 const srcDir = resolve(__dirname, 'src')
 const targetDir = resolve(__dirname, 'public')
 
@@ -59,9 +60,10 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/api': {
-				target: 'https://90.156.224.39/',
+				target: process.env.NODE_ENV === 'development' ? 'http://localhost:8888' :'https://90.156.224.39',
 				changeOrigin: true,
 				secure: false,
+				rewrite: process.env.NODE_ENV === 'development' ? (path) => path.replace(/^\/api/, '') : null,
 			},
 		},
 	},

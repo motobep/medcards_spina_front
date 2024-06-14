@@ -1,93 +1,138 @@
 <script setup>
-import { ref } from 'vue';
+import { auth } from '@/helpers'
+import { ref, onMounted } from 'vue';
+const props = defineProps(['client_id'])
 
 
-let parameters = ref([]);
+let musculoskeletal_dysfunction = ref(false);
+let respiratory_system_dysfunction = ref(false);
+let gastrointestinal_tract_dysfunction = ref(false);
+let urinary_and_reproductive_systems_dysfunction = ref(false);
+let cardiovascular_dysfunction = ref(false);
+let pain_syndrome = ref(false);
+let additional_text = ref('');
 
+async function save(client_id,
+  musculoskeletal_dysfunction,
+  respiratory_system_dysfunction,
+  gastrointestinal_tract_dysfunction,
+  urinary_and_reproductive_systems_dysfunction,
+  cardiovascular_dysfunction,
+  pain_syndrome,
+  additional_text) {
+  console.log('tests');
+  let data = await auth.post('save_health_complaints', {
+    body: JSON.stringify({
+      yclients_client_id: client_id,
+      musculoskeletal_dysfunction: musculoskeletal_dysfunction,
+      respiratory_system_dysfunction: respiratory_system_dysfunction,
+      gastrointestinal_tract_dysfunction: gastrointestinal_tract_dysfunction,
+      urinary_and_reproductive_systems_dysfunction: urinary_and_reproductive_systems_dysfunction,
+      cardiovascular_dysfunction: cardiovascular_dysfunction,
+      pain_syndrome: pain_syndrome,
+      additional_text: additional_text,
+    }),
+  });
+  if (data === null) return;
 
-async function add_diagnosis(client_id, text, employee_id, service) {
-	let data = await auth.post('add_diagnosis', {
-		body: JSON.stringify({
-			client_id: client_id,
-			text: text,
-			by_employee_id: employee_id,
-			service_name: service,
-		})
-	})
-	if (data === null) return
-
-	if (data.error === "") {
-		props.callback()
-	}
 }
 
+async function fetch_health_complaints(client_id) {
+	let data = await auth.post('get_health_complaints', {
+		body: JSON.stringify({
+			yclients_client_id: client_id,
+		})
+	})
+	if (data === null) return;
+	
+	musculoskeletal_dysfunction.value = data.musculoskeletal_dysfunction;
+	respiratory_system_dysfunction.value = data.respiratory_system_dysfunction;
+	gastrointestinal_tract_dysfunction.value = data.gastrointestinal_tract_dysfunction;
+	urinary_and_reproductive_systems_dysfunction.value = data.urinary_and_reproductive_systems_dysfunction;
+	cardiovascular_dysfunction.value = data.cardiovascular_dysfunction;
+	pain_syndrome.value = data.pain_syndrome;
+	additional_text.value = data.additional_text;
+}
+
+onMounted(async () => {
+	await fetch_health_complaints(props.client_id)
+})
 </script>
 
 <template>
-	<div>
-		<div class="mb-2"></div>
-		<input
-			type="checkbox"
-			id="checkbox1"
-			v-model="parameters"
-			value="musculoskeletalDysfunction"
-			class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-		/>
-		<label for="checkbox1" class="ms-2">Нарушение функции опорно-двигательного аппарата</label>
+  <div>
+    <div class="mb-2"></div>
+    <input
+      type="checkbox"
+      id="checkbox1"
+      v-model="musculoskeletal_dysfunction"
+      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label for="checkbox1" class="ms-2">Нарушение функции опорно-двигательного аппарата</label>
 
-		<div class="mb-2"></div>
-		<input
-			type="checkbox"
-			id="checkbox2"
-			v-model="parameters"
-			value=""
-			class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-		/>
-		<label for="checkbox2" class="ms-2">Нарушение функции дыхательной системы</label>
+    <div class="mb-2"></div>
+    <input
+      type="checkbox"
+      id="checkbox2"
+      v-model="respiratory_system_dysfunction"
+      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label for="checkbox2" class="ms-2">Нарушение функции дыхательной системы</label>
 
-		<div class="mb-2"></div>
-		<input
-			type="checkbox"
-			id="checkbox3"
-			v-model="parameters"
-			class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-		/>
-		<label for="checkbox3" class="ms-2">Нарушение функции органов желудочно-кишечного тракта</label>
+    <div class="mb-2"></div>
+    <input
+      type="checkbox"
+      id="checkbox3"
+      v-model="gastrointestinal_tract_dysfunction"
+      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label for="checkbox3" class="ms-2">Нарушение функции органов желудочно-кишечного тракта</label>
 
-		<div class="mb-2"></div>
-		<input
-			type="checkbox"
-			id="checkbox4"
-			v-model="parameters"
-			class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-		/>
-		<label for="checkbox4" class="ms-2">Нарушение функции мочевыделительной и половой систем</label>
+    <div class="mb-2"></div>
+    <input
+      type="checkbox"
+      id="checkbox4"
+      v-model="urinary_and_reproductive_systems_dysfunction"
+      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label for="checkbox4" class="ms-2">Нарушение функции мочевыделительной и половой систем</label>
 
-		<div class="mb-2"></div>
-		<input
-			type="checkbox"
-			id="checkbox5"
-			v-model="parameters"
-			class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-		/>
-		<label for="checkbox5" class="ms-2">Нарушение функции сердечно-сосудистой системы</label>
+    <div class="mb-2"></div>
+    <input
+      type="checkbox"
+      id="checkbox5"
+      v-model="cardiovascular_dysfunction"
+      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label for="checkbox5" class="ms-2">Нарушение функции сердечно-сосудистой системы</label>
 
-		<div class="mb-2"></div>
-		<input
-			type="checkbox"
-			id="checkbox6"
-			
-			class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-		/>
-		<label for="checkbox6" class="ms-2">Болевой синдром</label>
+    <div class="mb-2"></div>
+    <input
+      type="checkbox"
+      id="checkbox6"
+      v-model="pain_syndrome"
+      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+    />
+    <label for="checkbox6" class="ms-2">Болевой синдром</label>
 
-		<div class="mb-4"></div>
+    <div class="mb-4"></div>
 
-		<textarea class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700" placeholder="Дополнительно"></textarea>
+    <textarea
+      v-model="additional_text"
+      class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"
+      placeholder="Дополнительно"
+    ></textarea>
 
 		<div class="mb-2"></div>
 		<div class="flex justify-end">
-			<PrimaryBtn class="block mb-5 content-end">Сохранить</PrimaryBtn>
+			<PrimaryBtn  @click="save(client_id,
+			 musculoskeletal_dysfunction,
+			  respiratory_system_dysfunction,
+  gastrointestinal_tract_dysfunction,
+  urinary_and_reproductive_systems_dysfunction,
+  cardiovascular_dysfunction,
+  pain_syndrome,
+  additional_text)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
 		</div>
 		
 	</div>
