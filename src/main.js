@@ -4,6 +4,7 @@ import './style.css'
 import App from './App.vue'
 import router from './router'
 import PrimeVue, { defaultOptions } from 'primevue/config';
+import Notifications from '@kyvg/vue3-notification'
 
 import 'primevue/resources/themes/aura-light-indigo/theme.css';
 import '../node_modules/flowbite-vue/dist/index.css'
@@ -26,6 +27,7 @@ if (
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
+app.use(Notifications)
 app.component('v-select', vSelect)
 
 app.use(router)

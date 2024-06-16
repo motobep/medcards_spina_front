@@ -18,7 +18,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showSomanticStatus" class="border rounded-lg p-3">
-					<SomanticStatus/>
+					<SomanticStatus :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -27,7 +27,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showGeneralExamination" class="border rounded-lg p-3">
-					<GeneralExamination/>
+					<GeneralExamination :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -36,7 +36,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showDiagnosis" class="border rounded-lg p-3">
-					<Diagnosis/>
+					<Diagnosis :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -45,7 +45,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showTreatmentPlan" class="border rounded-lg p-3">
-					<TreatmentPlan/>
+					<TreatmentPlan :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -54,7 +54,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showAdditional" class="border rounded-lg p-3">
-					<Additional/>
+					<Additional :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>

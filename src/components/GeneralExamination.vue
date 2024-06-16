@@ -1,3 +1,7 @@
+<script setup>
+let general_flexion_limitaion = true;
+</script>
+
 <template>
     <div>
         <div class="font-bold mb-2">Изгибы позвоночника в саггитальной плоскости: </div>
@@ -97,12 +101,12 @@
         <div class="w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
             <label class="w-1/5 sm:w-1/5" for="general">Общая экстензия: </label>
             <div class="relative flex items-center space-x-4 me-3">
-                <input type="radio" id="general_extension_not_limited" name="general_extension" class="hidden peer/general_extension_not_limited" />
+                <input v-model="general_flexion_limitaion" type="radio" id="general_extension_not_limited" name="general_extension" class="hidden peer/general_extension_not_limited" />
                 <label for="general_extension_not_limited" class="cursor-pointer peer-checked/general_extension_not_limited:border-white-500 peer-checked/general_extension_not_limited:border-b-2">Не ограничена</label>
 
                 <span>/</span>
 
-                <input type="radio" id="general_extension_limited" name="general_extension" class="hidden peer/general_extension_limited" />
+                <input v-model="general_flexion_limitaion" type="radio" id="general_extension_limited" name="general_extension" class="hidden peer/general_extension_limited" />
                 <label for="general_extension_limited" class="cursor-pointer peer-checked/general_extension_limited:dark:border-white-500 peer-checked/general_extension_limited:border-b-2">Ограничена</label>
             </div>
 
@@ -187,3 +191,6 @@
 
     </div>
 </template>
+
+<style scoped>
+</style>
