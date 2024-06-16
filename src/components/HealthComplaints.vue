@@ -44,6 +44,10 @@ async function fetch_health_complaints(client_id) {
 		})
 	})
 	if (data === null) return;
+
+  if (data.length == 0) {
+		return;
+	}
 	
 	musculoskeletal_dysfunction.value = data.musculoskeletal_dysfunction;
 	respiratory_system_dysfunction.value = data.respiratory_system_dysfunction;
