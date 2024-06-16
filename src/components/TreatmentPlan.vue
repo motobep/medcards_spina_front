@@ -1,15 +1,61 @@
+<script setup>
+import { onMounted, ref } from 'vue';
+import { auth } from '@/helpers'
+const props = defineProps(['client_id'])
+
+const performed_manipulations = ref(null);
+const upcoming_manipulations = ref(null);
+
+async function save(client_id) {
+  let data = await auth.post('save_treatment_plan', {
+    headers: {
+			'Content-Type': 'application/json',
+		},
+    body: JSON.stringify({
+        yclients_client_id: client_id,
+        performed_manipulations: performed_manipulations.value,
+        upcoming_manipulations: upcoming_manipulations.value,
+
+    }),
+  });
+
+    if (data === null) return;
+}
+
+async function fetch_treatment_plan(client_id) {
+	let data = await auth.post('get_treatment_plan', {
+		body: JSON.stringify({
+			yclients_client_id: client_id,
+		})
+	})
+	if (data === null) return;
+
+    if (data.length == 0) {
+            return;
+    }
+	
+	performed_manipulations.value = data.performed_manipulations;
+	upcoming_manipulations.value = data.upcoming_manipulations;
+}
+
+onMounted(async () => {
+	await fetch_treatment_plan(props.client_id)
+})
+</script>
+
+
 <template>
     <div>
         <div class="font-bold mb-4">Проведённые манипуляции</div>
-        <textarea class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
+        <textarea v-model="performed_manipulations" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
         <div class="mb-4"/>
 
         <div class="font-bold mb-4">Предстоящие манипуляции</div>
-        <textarea class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
+        <textarea v-model="upcoming_manipulations" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
         <div class="mb-4"/>
 
         <div class="flex justify-end">
-			<PrimaryBtn class="block mb-5 content-end">Сохранить</PrimaryBtn>
+			<PrimaryBtn @click="save(client_id)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
 		</div>
     </div>
 </template>

@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { auth } from '@/helpers'
-import { notify } from "@kyvg/vue3-notification";
 const props = defineProps(['client_id'])
 
 const main_disease = ref('');
