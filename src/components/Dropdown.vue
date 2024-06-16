@@ -32,11 +32,11 @@ const props = defineProps(['client_id'])
 			</transition>
 			<div class="mb-4"/>
 
-			<span @click="toggleDiagnosis" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Диагнозы</span>
+			<span @click="toggleDetailedDiagnosis" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Диагнозы</span>
 			<div class="mb-4"/>
 			<transition name="slide">
-				<div v-if="showDiagnosis" class="border rounded-lg p-3">
-					<Diagnosis :client_id="client_id"/>
+				<div v-if="showDetailedDiagnosis" class="border rounded-lg p-3">
+					<DetailedDiagnosis :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -66,7 +66,7 @@ const props = defineProps(['client_id'])
 	import HealthComplaints from '@/components/HealthComplaints.vue';
 	import SomanticStatus from '@/components/SomanticStatus.vue';
 	import GeneralExamination from './GeneralExamination.vue';
-	import Diagnosis from './Diagnosis.vue';
+	import DetailedDiagnosis from './DetailedDiagnosis.vue';
 	import TreatmentPlan from './TreatmentPlan.vue';
 	import Additional from './Additional.vue';
 
@@ -76,7 +76,7 @@ const props = defineProps(['client_id'])
 			HealthComplaints,
 			SomanticStatus,
 			GeneralExamination,
-			Diagnosis,
+			DetailedDiagnosis,
 			TreatmentPlan,
 			Additional,
 		},
@@ -85,7 +85,7 @@ const props = defineProps(['client_id'])
 				showComplaints: false,
 				showSomanticStatus: false,
 				showGeneralExamination: false,
-				showDiagnosis: false,
+				showDetailedDiagnosis: false,
 				showTreatmentPlan: false,
 				showAdditional: false,
 			};
@@ -100,8 +100,8 @@ const props = defineProps(['client_id'])
 			toggleGeneralExamination() {
 				this.showGeneralExamination = !this.showGeneralExamination;
 			},
-			toggleDiagnosis() {
-				this.showDiagnosis = !this.showDiagnosis;
+			toggleDetailedDiagnosis() {
+				this.showDetailedDiagnosis = !this.showDetailedDiagnosis;
 			},
 			toggleTreatmentPlan() {
 				this.showTreatmentPlan = !this.showTreatmentPlan;

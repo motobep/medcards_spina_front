@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { auth } from '@/helpers'
 import { notify } from "@kyvg/vue3-notification";
 const props = defineProps(['client_id'])
@@ -9,7 +9,7 @@ const complications = ref('');
 const related_diseases = ref('');
 
 async function save(client_id) {
-  let data = await auth.post('save_diagnosis', {
+  let data = await auth.post('save_detailed_diagnosis', {
     headers: {
 			'Content-Type': 'application/json',
 		},
@@ -24,6 +24,26 @@ async function save(client_id) {
     if (data === null) return;
 }
 
+async function fetch_detailed_diagnosis(client_id) {
+	let data = await auth.post('get_detailed_diagnosis', {
+		body: JSON.stringify({
+			yclients_client_id: client_id,
+		})
+	})
+	if (data === null) return;
+
+  if (data.length == 0) {
+		return;
+	}
+	
+	main_disease.value = data.main_disease;
+	complications.value = data.complications;
+	related_diseases.value = data.related_diseases;
+}
+
+onMounted(async () => {
+	await fetch_detailed_diagnosis(props.client_id)
+})
 
 
 </script>
