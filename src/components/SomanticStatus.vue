@@ -60,9 +60,9 @@ async function fetch_somantic_status(clientId) {
 
 	general_status.value = data.general_status;
 	body_type.value = data.body_type;
-	skin.value = data.skin;
-	mucous.value = data.mucous;
-	breath.value = data.breath;
+	if (data.skin.length !== null) skin.value = data.skin;
+	if (data.mucous.length !== null) mucous.value = data.mucous;
+	if (data.breath.length !== null) breath.value = data.breath;
 	abdomen_tension.value = data.abdomen_tension;
 	abdomen_pain.value = data.abdomen_pain;
 	wheeze.value = data.wheeze;

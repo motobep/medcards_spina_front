@@ -126,9 +126,6 @@ async function accept_visit(id) {
 		<div class="mb-5"/>
 		<Dropdown :client_id="client_id"/>
 		<div class="mb-8"/>
-		<div class="font-bold mb-2">Новый диагноз</div>
-		<AddDiagnosis :services="services" :client_id="client_id"
-			:callback="() => fetch_diagnoses(client_id) "/>
 
 		<div class="mb-5">
 		<div class="font-bold mb-2">Диагнозы</div>
