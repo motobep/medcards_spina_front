@@ -60,7 +60,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/api': {
-				target: process.env.NODE_ENV === 'development' ? 'http://localhost:8888' :'https://90.156.224.39',
+				target: process.env.NODE_ENV === 'development' ? 'http://localhost:8888' :'http://localhost:8888',
 				changeOrigin: true,
 				secure: false,
 				rewrite: process.env.NODE_ENV === 'development' ? (path) => path.replace(/^\/api/, '') : null,
