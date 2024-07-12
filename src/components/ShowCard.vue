@@ -3,12 +3,13 @@ import Diagnoses from '@components/Diagnoses.vue';
 import Appointments from '@components/Appointments.vue';
 import CreateServices from '@components/CreateServices.vue';
 import AddDiagnosis from '@components/AddDiagnosis.vue'
-import Dropdown from '@components/Dropdown.vue'
 
 import { ref, onMounted, watchEffect, computed } from 'vue'
 import { auth } from '@/helpers'
 import { authStore, useClientStore } from '@/stores/auth'
 import moment from 'moment'
+import Medcard from './Medcard.vue';
+import { nextTick } from 'vue'
 
 const clientStore = useClientStore()
 
@@ -16,6 +17,9 @@ const services = ref([])
 
 let diagnoses = ref([])
 let appointments = ref([])
+const opened_medcards = ref(new Map())
+let is_new_medcard_opened = ref(false);
+const medcards = ref([]);
 
 let client_id = computed(() => {
 	let c = clientStore.client
@@ -46,7 +50,7 @@ async function get_services() {
 		if (a < b) return -1
 		return 0
 	})
-
+		
 	authStore.set('services', services.value)
 }
 
@@ -119,13 +123,48 @@ async function accept_visit(id) {
 		found.visited++
 	}
 }
+
+async function toggle_medcard(id) {
+	if (id === -1) {
+		is_new_medcard_opened.value = !is_new_medcard_opened.value;
+		return;
+	}
+	var res = opened_medcards.value.get(id);
+
+	if (res === undefined) {
+		opened_medcards.value.set(id, true);
+		await nextTick();
+		return;
+	}
+	opened_medcards.value.delete(id);
+}
+
 </script>
 
 <template>
 	<div class="w-[1000px]">
-		<div class="mb-5"/>
-		<Dropdown :client_id="client_id"/>
-		<div class="mb-8"/>
+		<div>
+			<span @click="toggle_medcard(-1)" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Новая медкарта</span>
+				<div class="mb-4"/>
+				<transition name="slide">
+					<div v-if="is_new_medcard_opened" class="border rounded-lg p-3">
+						<Medcard :client_id="client_id" :is_new="true"/>
+					</div>
+				</transition>
+			<div class="mb-4"/>
+		</div>
+
+		<div v-for="medcard in medcards">
+			<span @click="toggle_medcard(medcard.id)" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">{{ medcard.id }}</span>
+				<div class="mb-4"/>
+				<transition name="slide">
+					<div v-if="opened_medcards.has(medcard.id)" class="border rounded-lg p-3">
+						<Medcard :client_id="client_id" medcard_id="medcard.id" :is_new="true"/>
+					</div>
+				</transition>
+			<div class="mb-4"/>
+		</div>
+
 		<div class="font-bold mb-2">Новый диагноз</div>
 		<AddDiagnosis :services="services" :client_id="client_id"
 			:callback="() => fetch_diagnoses(client_id) "/>
