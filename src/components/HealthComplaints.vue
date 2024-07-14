@@ -1,7 +1,7 @@
 <script setup>
 import { auth } from '@/helpers'
 import { ref, onMounted } from 'vue';
-const props = defineProps(['client_id'])
+const props = defineProps(['client_id', 'is_new_medcard'])
 
 
 let musculoskeletal_dysfunction = ref(false);

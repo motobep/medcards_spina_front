@@ -3,12 +3,14 @@ import Diagnoses from '@components/Diagnoses.vue';
 import Appointments from '@components/Appointments.vue';
 import CreateServices from '@components/CreateServices.vue';
 import AddDiagnosis from '@components/AddDiagnosis.vue'
+import 'primeicons/primeicons.css';
 
 import { ref, onMounted, watchEffect, computed } from 'vue'
 import { auth } from '@/helpers'
 import { authStore, useClientStore } from '@/stores/auth'
 import moment from 'moment'
 import Medcard from './Medcard.vue';
+import Button from 'primevue/button';
 import { nextTick } from 'vue'
 
 const clientStore = useClientStore()
@@ -33,6 +35,7 @@ watchEffect(async () => {
 	await get_services()
 	await fetch_diagnoses(client_id.value)
 	await fetch_appointments(client_id.value)
+	await fetch_medcards(client_id.value)
 })
 
 async function get_services() {
@@ -70,6 +73,20 @@ async function fetch_diagnoses(client_id) {
 		el.created_at = moment.unix(el.created_at).format('DD.MM.YYYY')
 		return el
 	}).sort(compare_idx_of_objects)
+}
+
+async function fetch_medcards(client_id) {
+	let data = await auth.post('get_medcards', {
+		body: JSON.stringify({
+			yclients_client_id: client_id,
+		})
+	})
+
+	medcards.value = data['data'].map((el) => {
+		el.created_at = moment.unix(el.created_at).format('DD.MM.YYYY hh:mm:ss'),
+		el.id
+		return el
+	}).sort(compare_idx_of_objects);
 }
 
 function compare_idx_of_objects(a, b) {
@@ -139,24 +156,31 @@ async function toggle_medcard(id) {
 	opened_medcards.value.delete(id);
 }
 
+async function create_medcard(client_id) {
+	console.log("here")
+	let data = await auth.post('create_medcard', {
+		body: JSON.stringify({
+			yclients_client_id: client_id,
+		})
+	})
+	if (data === null) return
+	await fetch_medcards(client_id);
+} 
+
 </script>
 
 <template>
 	<div class="w-[1000px]">
 		<div>
-			<span @click="toggle_medcard(-1)" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Новая медкарта</span>
-				<div class="mb-4"/>
-				<transition name="slide">
-					<div v-if="is_new_medcard_opened" class="border rounded-lg p-3">
-						<Medcard :client_id="client_id" :is_new="true"/>
-					</div>
-				</transition>
+			<span @click="create_medcard(client_id)" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Добавить медкарту</span>
 			<div class="mb-4"/>
 		</div>
 
 		<div v-for="medcard in medcards">
-			<span @click="toggle_medcard(medcard.id)" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">{{ medcard.id }}</span>
-				<div class="mb-4"/>
+			<span @click="toggle_medcard(medcard.id)" icon="pi pi-trash" class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">{{ medcard.created_at }}
+				<Button icon="pi pi-trash" @click="delete_diagnosis(client_id, entity.id)" />
+			</span>
+			<div class="mb-4"/>
 				<transition name="slide">
 					<div v-if="opened_medcards.has(medcard.id)" class="border rounded-lg p-3">
 						<Medcard :client_id="client_id" medcard_id="medcard.id" :is_new="true"/>
