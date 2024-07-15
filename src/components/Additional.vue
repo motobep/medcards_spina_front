@@ -1,7 +1,7 @@
 <script setup>
 import { auth } from '@/helpers'
 import { ref, onMounted } from 'vue'
-const props = defineProps(['client_id'])
+const props = defineProps(['medcard_id'])
 
 const doctors_consulted = ref([]);
 const mri_file_uuid = ref(null);
@@ -47,9 +47,10 @@ async function on_file_changed(event, input_name) {
     }
 }
 
-async function save(client_id) {
+async function save(medcard_id) {
     let data = await auth.post('save_additional_info', {
         body: JSON.stringify({
+            medcard_id: medcard_id,
             doctors_consulted: doctors_consulted.value,
             mri_file_id: mri_file_uuid.value,
             ultrasound_file_id: ultrasound_file_uuid.value,
@@ -58,7 +59,6 @@ async function save(client_id) {
             ct_file_id: ct_file_uuid.value,
             drug_therapy: drug_therapy.value,
             non_drug_therapy: non_drug_therapy.value,
-            yclients_client_id: client_id,
             comment: comment.value
         }),
     });
@@ -66,10 +66,10 @@ async function save(client_id) {
     if (data === null) return;
 }
 
-async function fetch_additional_info(client_id) {
+async function fetch_additional_info(medcard_id) {
     let data = await auth.post('get_additional_info', {
 		body: JSON.stringify({
-			yclients_client_id: client_id,
+			medcard_id: medcard_id,
 		})
 	})
 	if (data === null) return;
@@ -90,19 +90,15 @@ async function fetch_additional_info(client_id) {
 }
 
 onMounted(async () => {
-	await fetch_additional_info(props.client_id)
+	await fetch_additional_info(props.medcard_id)
 })
-
-async function test() {
-    console.log(ct_file_uuid)
-}
 
 
 </script>
 
 
 <template>
-    <div @click="test()">
+    <div>
         <div class="w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 
             <div class="me-2">Консультация специалиста:</div>
@@ -110,63 +106,63 @@ async function test() {
             <div class="flex items-center me-4">
                 <input
                 type="checkbox"
-                id="neurologist"
+                :id="'neurologist' + props.medcard_id"
 
                 v-model="doctors_consulted"
                 :value="'neurologist'"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                  />
-                <label for="neurologist" class="ms-2">Невролог</label>
+                <label :for="'neurologist' + props.medcard_id" class="ms-2">Невролог</label>
             </div>
 
             <div class="flex items-center me-4">
 
                 <input
                 type="checkbox"
-                id="therapist"
+                :id="'therapist' + props.medcard_id"
 
                 v-model="doctors_consulted"
                 :value="'therapist'"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                  />
-                <label for="therapist" class="ms-2">Терапевт</label>
+                <label :for="'therapist' + props.medcard_id" class="ms-2">Терапевт</label>
 
             </div>
 
             <div class="flex items-center me-4">
                 <input
                 type="checkbox"
-                id="pediatrician"
+                :id="'pediatrician' + props.medcard_id"
 
                 v-model="doctors_consulted"
                 :value="'pediatrician'"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                  />
-                <label for="pediatrician" class="ms-2">Педиатр</label>
+                <label :for="'pediatrician' + props.medcard_id" class="ms-2">Педиатр</label>
             </div>
 
             <div class="flex items-center me-4">
                 <input
                 type="checkbox"
-                id="orthopedist"
+                :id="'orthopedist' + props.medcard_id"
 
                 v-model="doctors_consulted"
                 :value="'orthopedist'"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                  />
-                <label for="orthopedist" class="ms-2">Ортопед</label>
+                <label :for="'orthopedist' + props.medcard_id" class="ms-2">Ортопед</label>
             </div>
 
             <div class="flex items-center me-4">
                 <input
                 type="checkbox"
-                id="dentist"
+                :id="'dentist' + props.medcard_id"
 
                 v-model="doctors_consulted"
                 :value="'dentist'"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                  />
-                <label for="dentist" class="ms-2">Стоматолог</label>
+                <label :for="'dentist' + props.medcard_id" class="ms-2">Стоматолог</label>
             </div>
 
             
@@ -174,38 +170,38 @@ async function test() {
       
         <div class="mb-6"/>
         <div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-			<label for="file_input" class="w-1/12 sm:w-1/12">МРТ</label>
+			<label :for="'file_input' + props.medcard_id" class="w-1/12 sm:w-1/12">МРТ</label>
             <a v-if="mri_file_uuid" class="w-1/6" v-bind:href="'/api/get_file?uuid='+mri_file_uuid">Скачать</a>
             <a v-else class="w-1/6">Файл не найден</a>
-            <input @input="on_file_changed($event, 'mri')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+            <input @input="on_file_changed($event, 'mri')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" :id="'file_input' + props.medcard_id" type="file">
 		</div>
         <div class="mb-4"/>
         <div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-			<label for="file_input" class="w-1/12 sm:w-1/12">УЗИ</label>
+			<label :for="'file_input' + props.medcard_id" class="w-1/12 sm:w-1/12">УЗИ</label>
             <a v-if="ultrasound_file_uuid" class="w-1/6" v-bind:href="'/api/get_file?uuid='+ultrasound_file_uuid">Скачать</a>
             <a v-else class="w-1/6">Файл не найден</a>
-            <input @input="on_file_changed($event, 'ultrasound')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+            <input @input="on_file_changed($event, 'ultrasound')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" :id="'file_input' + props.medcard_id" type="file">
 		</div>
         <div class="mb-4"/>
         <div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-            <label for="file_input" class="w-1/12 sm:w-1/12">Лаб</label>
+            <label :for="'file_input' + props.medcard_id" class="w-1/12 sm:w-1/12">Лаб</label>
             <a v-if="lab_file_uuid" class="w-1/6" v-bind:href="'/api/get_file?uuid='+lab_file_uuid">Скачать</a>
             <a v-else class="w-1/6">Файл не найден</a>
-            <input @input="on_file_changed($event, 'lab')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+            <input @input="on_file_changed($event, 'lab')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" :id="'file_input' + props.medcard_id" type="file">
 		</div>
         <div class="mb-4"/>
         <div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-			<label for="file_input" class="w-1/12 sm:w-1/12">Rg</label>
+			<label :for="'file_input' + props.medcard_id" class="w-1/12 sm:w-1/12">Rg</label>
             <a v-if="rg_file_uuid" class="w-1/6" v-bind:href="'/api/get_file?uuid='+rg_file_uuid">Скачать</a>
             <a v-else class="w-1/6">Файл не найден</a>
-            <input @input="on_file_changed($event, 'rg')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+            <input @input="on_file_changed($event, 'rg')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" :id="'file_input' + props.medcard_id" type="file">
 		</div>
         <div class="mb-4"/>
         <div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-			<label for="file_input" class="w-1/12 sm:w-1/12">Кт</label>
+			<label :for="'file_input' + props.medcard_id" class="w-1/12 sm:w-1/12">Кт</label>
             <a v-if="ct_file_uuid" class="w-1/6" v-bind:href="'/api/get_file?uuid='+ct_file_uuid">Скачать</a>
             <a v-else class="w-1/6">Файл не найден</a>
-            <input @input="on_file_changed($event, 'ct')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+            <input @input="on_file_changed($event, 'ct')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" :id="'file_input' + props.medcard_id" type="file">
 		</div>
         <div class="mb-4"/>
 
@@ -221,7 +217,7 @@ async function test() {
         <div class="mb-4"/>
 
         <div class="flex justify-end">
-			<PrimaryBtn @click="save(client_id)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
+			<PrimaryBtn @click="save(medcard_id)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
 		</div>
     </div>
 </template>

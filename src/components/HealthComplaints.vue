@@ -1,7 +1,7 @@
 <script setup>
 import { auth } from '@/helpers'
 import { ref, onMounted } from 'vue';
-const props = defineProps(['client_id', 'is_new_medcard'])
+const props = defineProps(['client_id', 'medcard_id'])
 
 
 let musculoskeletal_dysfunction = ref(false);
@@ -12,7 +12,8 @@ let cardiovascular_dysfunction = ref(false);
 let pain_syndrome = ref(false);
 let additional_text = ref('');
 
-async function save(client_id,
+async function save(
+  medcard_id,
   musculoskeletal_dysfunction,
   respiratory_system_dysfunction,
   gastrointestinal_tract_dysfunction,
@@ -20,10 +21,9 @@ async function save(client_id,
   cardiovascular_dysfunction,
   pain_syndrome,
   additional_text) {
-  console.log('tests');
   let data = await auth.post('save_health_complaints', {
     body: JSON.stringify({
-      yclients_client_id: client_id,
+      medcard_id: medcard_id,
       musculoskeletal_dysfunction: musculoskeletal_dysfunction,
       respiratory_system_dysfunction: respiratory_system_dysfunction,
       gastrointestinal_tract_dysfunction: gastrointestinal_tract_dysfunction,
@@ -37,10 +37,11 @@ async function save(client_id,
 
 }
 
-async function fetch_health_complaints(client_id) {
+async function fetch_health_complaints(client_id, medcard_id) {
 	let data = await auth.post('get_health_complaints', {
 		body: JSON.stringify({
 			yclients_client_id: client_id,
+      medcard_id: medcard_id,
 		})
 	})
 	if (data === null) return;
@@ -59,7 +60,7 @@ async function fetch_health_complaints(client_id) {
 }
 
 onMounted(async () => {
-	await fetch_health_complaints(props.client_id)
+	await fetch_health_complaints(props.client_id, props.medcard_id)
 })
 </script>
 
@@ -68,56 +69,56 @@ onMounted(async () => {
     <div class="mb-2"></div>
     <input
       type="checkbox"
-      id="checkbox1"
+      :id="'checkbox1' + props.medcard_id"
       v-model="musculoskeletal_dysfunction"
       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
     />
-    <label for="checkbox1" class="ms-2">Нарушение функции опорно-двигательного аппарата</label>
+    <label :for="'checkbox1' + props.medcard_id" class="ms-2">Нарушение функции опорно-двигательного аппарата</label>
 
     <div class="mb-2"></div>
     <input
       type="checkbox"
-      id="checkbox2"
+      :id="'checkbox2' + props.medcard_id"
       v-model="respiratory_system_dysfunction"
       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
     />
-    <label for="checkbox2" class="ms-2">Нарушение функции дыхательной системы</label>
+    <label :for="'checkbox2' + props.medcard_id" class="ms-2">Нарушение функции дыхательной системы</label>
 
     <div class="mb-2"></div>
     <input
       type="checkbox"
-      id="checkbox3"
+      :id="'checkbox3' + props.medcard_id"
       v-model="gastrointestinal_tract_dysfunction"
       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
     />
-    <label for="checkbox3" class="ms-2">Нарушение функции органов желудочно-кишечного тракта</label>
+    <label :for="'checkbox3' + props.medcard_id" class="ms-2">Нарушение функции органов желудочно-кишечного тракта</label>
 
     <div class="mb-2"></div>
     <input
       type="checkbox"
-      id="checkbox4"
+      :id="'checkbox4' + props.medcard_id"
       v-model="urinary_and_reproductive_systems_dysfunction"
       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
     />
-    <label for="checkbox4" class="ms-2">Нарушение функции мочевыделительной и половой систем</label>
+    <label :for="'checkbox4' + props.medcard_id" class="ms-2">Нарушение функции мочевыделительной и половой систем</label>
 
     <div class="mb-2"></div>
     <input
       type="checkbox"
-      id="checkbox5"
+      :id="'checkbox5' + props.medcard_id"
       v-model="cardiovascular_dysfunction"
       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
     />
-    <label for="checkbox5" class="ms-2">Нарушение функции сердечно-сосудистой системы</label>
+    <label :for="'checkbox5' + props.medcard_id" class="ms-2">Нарушение функции сердечно-сосудистой системы</label>
 
     <div class="mb-2"></div>
     <input
       type="checkbox"
-      id="checkbox6"
+      :id="'checkbox6' + props.medcard_id"
       v-model="pain_syndrome"
       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
     />
-    <label for="checkbox6" class="ms-2">Болевой синдром</label>
+    <label :for="'checkbox6' + props.medcard_id" class="ms-2">Болевой синдром</label>
 
     <div class="mb-4"></div>
 
@@ -129,7 +130,7 @@ onMounted(async () => {
 
 		<div class="mb-2"></div>
 		<div class="flex justify-end">
-			<PrimaryBtn  @click="save(client_id,
+			<PrimaryBtn  @click="save(medcard_id,
 			 musculoskeletal_dysfunction,
 			  respiratory_system_dysfunction,
   gastrointestinal_tract_dysfunction,

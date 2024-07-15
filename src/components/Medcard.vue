@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps(['client_id'])
+const props = defineProps(['client_id', 'medcard_id'])
 </script>
 
 <template>
@@ -9,7 +9,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showComplaints" class="border rounded-lg p-3">
-					<HealthComplaints :client_id="client_id"/>
+					<HealthComplaints :medcard_id="medcard_id" :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -18,7 +18,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showSomanticStatus" class="border rounded-lg p-3">
-					<SomanticStatus :client_id="client_id"/>
+					<SomanticStatus :medcard_id="medcard_id" :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -27,7 +27,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showGeneralExamination" class="border rounded-lg p-3">
-					<GeneralExamination :client_id="client_id"/>
+					<GeneralExamination :medcard_id="medcard_id" :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -36,7 +36,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showDetailedDiagnosis" class="border rounded-lg p-3">
-					<DetailedDiagnosis :client_id="client_id"/>
+					<DetailedDiagnosis :medcard_id="medcard_id" :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -45,7 +45,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showTreatmentPlan" class="border rounded-lg p-3">
-					<TreatmentPlan :client_id="client_id"/>
+					<TreatmentPlan :medcard_id="medcard_id" :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>
@@ -54,7 +54,7 @@ const props = defineProps(['client_id'])
 			<div class="mb-4"/>
 			<transition name="slide">
 				<div v-if="showAdditional" class="border rounded-lg p-3">
-					<Additional :client_id="client_id"/>
+					<Additional :medcard_id="medcard_id" :client_id="client_id"/>
 				</div>
 			</transition>
 			<div class="mb-4"/>

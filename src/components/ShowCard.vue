@@ -32,10 +32,10 @@ let client_id = computed(() => {
 watchEffect(async () => {
 	if (!client_id.value) return
 
+	await fetch_medcards(client_id.value)
 	await get_services()
 	await fetch_diagnoses(client_id.value)
 	await fetch_appointments(client_id.value)
-	await fetch_medcards(client_id.value)
 })
 
 async function get_services() {
@@ -81,6 +81,12 @@ async function fetch_medcards(client_id) {
 			yclients_client_id: client_id,
 		})
 	})
+
+	if (!data) return;
+	if (!data['data']) {
+		medcards.value = [];
+		return;	
+	};
 
 	medcards.value = data['data'].map((el) => {
 		el.created_at = moment.unix(el.created_at).format('DD.MM.YYYY hh:mm:ss'),
@@ -157,7 +163,6 @@ async function toggle_medcard(id) {
 }
 
 async function create_medcard(client_id) {
-	console.log("here")
 	let data = await auth.post('create_medcard', {
 		body: JSON.stringify({
 			yclients_client_id: client_id,
@@ -165,7 +170,17 @@ async function create_medcard(client_id) {
 	})
 	if (data === null) return
 	await fetch_medcards(client_id);
-} 
+}
+
+async function delete_medcard(id, client_id) {
+	let data = await auth.post('delete_medcard', {
+		body: JSON.stringify({
+			medcard_id: id,
+		})
+	})
+	if (data === null) return
+	await fetch_medcards(client_id);
+}
 
 </script>
 
@@ -177,13 +192,14 @@ async function create_medcard(client_id) {
 		</div>
 
 		<div v-for="medcard in medcards">
-			<span @click="toggle_medcard(medcard.id)" icon="pi pi-trash" class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">{{ medcard.created_at }}
-				<Button icon="pi pi-trash" @click="delete_diagnosis(client_id, entity.id)" />
+			<span class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">
+				<Button @click="toggle_medcard(medcard.id)">{{ medcard.created_at }}</Button>
+				<Button icon="pi pi-trash" @click="delete_medcard(medcard.id, client_id)" />
 			</span>
 			<div class="mb-4"/>
 				<transition name="slide">
 					<div v-if="opened_medcards.has(medcard.id)" class="border rounded-lg p-3">
-						<Medcard :client_id="client_id" medcard_id="medcard.id" :is_new="true"/>
+						<Medcard :client_id="client_id" :medcard_id="medcard.id"/>
 					</div>
 				</transition>
 			<div class="mb-4"/>

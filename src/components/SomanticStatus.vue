@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { auth } from '@/helpers'
-const props = defineProps(['client_id'])
+const props = defineProps(['client_id', 'medcard_id'])
 
 
 let general_status = ref(null);
@@ -18,7 +18,7 @@ let blood_pressure = ref(0);
 let pulse = ref(0);
 let body_temp = ref(0);
 
-async function save(client_id) {
+async function save(medcard_id) {
   let data = await auth.post('save_somantic_status', {
     body: JSON.stringify({
 		general_status: general_status.value,
@@ -35,18 +35,17 @@ async function save(client_id) {
 		pulse: Number(pulse.value),
 		body_temp: Number(body_temp.value),
 		body_mass_index: Number(body_mass_index.value),
-		yclients_client_id: client_id
+		medcard_id: medcard_id
     }),
   });
   if (data === null) return;
 
 }
 
-async function fetch_somantic_status(clientId) {
-
+async function fetch_somantic_status(medcard_id) {
 	const data = await auth.post('get_somantic_status', {
 		body: JSON.stringify({
-		yclients_client_id: clientId,
+			medcard_id: medcard_id,
 		}),
 	});
 
@@ -83,31 +82,31 @@ let body_mass_index = computed(() => {
 
 
 onMounted(async () => {
-	await fetch_somantic_status(props.client_id)
+	await fetch_somantic_status(props.medcard_id)
 })
 
 
 </script>
 
 <template>
-	<div>
+	<div @click="console.log(general_status)">
 		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Общее состояние: </div>
 			<div class="flex items-center me-3">
-				<input v-model="general_status" :value="null" id="gen_health_status_none" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="gen_health_status"/>
-				<label for="gen_health_status_none" class="ms-2">Не выбрано</label>
+				<input v-model="general_status" :value="null" :id="'gen_health_status_none' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'gen_health_status' + props.medcard_id" />
+				<label :for="'gen_health_status_none' + props.medcard_id" class="ms-2">Не выбрано</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="general_status" :value="'satisfactory'" id="gen_health_status_satisfactory" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="gen_health_status"/>
-				<label for="gen_health_status_satisfactory" class="ms-2">Удовлетворительно</label>
+				<input v-model="general_status" :value="'satisfactory'" :id="'gen_health_status_satisfactory' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'gen_health_status' + props.medcard_id" />
+				<label :for="'gen_health_status_satisfactory' + props.medcard_id" class="ms-2">Удовлетворительно</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="general_status" :value="'moderate'" id="gen_health_status_moderate" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="gen_health_status"/>
-				<label for="gen_health_status_moderate" class="ms-2">Средней тяжести</label>
+				<input v-model="general_status" :value="'moderate'" :id="'gen_health_status_moderate' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'gen_health_status' + props.medcard_id" />
+				<label :for="'gen_health_status_moderate' + props.medcard_id" class="ms-2">Средней тяжести</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="general_status" :value="'severe'" id="gen_health_status_severe" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="gen_health_status"/>
-				<label for="gen_health_status_severe" class="ms-2">Тяжёлое</label>
+				<input v-model="general_status" :value="'severe'" :id="'gen_health_status_severe' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'gen_health_status' + props.medcard_id" />
+				<label :for="'gen_health_status_severe' + props.medcard_id" class="ms-2">Тяжёлое</label>
 			</div>
 
 		</div>
@@ -115,197 +114,197 @@ onMounted(async () => {
 		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Тип телосложения: </div>
 			<div class="flex items-center me-3">
-				<input v-model="body_type" :value="null" id="body_type_none" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="body_type"/>
-				<label for="body_type_none" class="ms-2">Не выбрано</label>
+				<input v-model="body_type" :value="null" :id="'body_type_none' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'body_type' + props.medcard_id" />
+				<label :for="'body_type_none' + props.medcard_id" class="ms-2">Не выбрано</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="body_type" :value="'norm'"  id="body_type_norm" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="body_type"/>
-				<label for="body_type_norm" class="ms-2">Нормостенический</label>
+				<input v-model="body_type" :value="'norm'"  :id="'body_type_norm' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'body_type' + props.medcard_id" />
+				<label :for="'body_type_norm' + props.medcard_id" class="ms-2">Нормостенический</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="body_type" :value="'hyper'"  id="body_type_hyper" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="body_type"/>
-				<label for="body_type_hyper" class="ms-2">Гиперстенический</label>
+				<input v-model="body_type" :value="'hyper'"  :id="'body_type_hyper' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'body_type' + props.medcard_id" />
+				<label :for="'body_type_hyper' + props.medcard_id" class="ms-2">Гиперстенический</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="body_type" :value="'asthenic'"  id="body_type_asthenic" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="body_type"/>
-				<label for="body_type_asthenic" class="ms-2">Астенический</label>
+				<input v-model="body_type" :value="'asthenic'"  :id="'body_type_asthenic' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'body_type' + props.medcard_id" />
+				<label :for="'body_type_asthenic' + props.medcard_id" class="ms-2">Астенический</label>
 			</div>
 		</div>
 
 		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Кожные покровы: </div>
 			<div class="flex items-center me-3">
-				<input v-model="skin" :value="'clean'" id="skin_clean" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="skin_condition"/>
-				<label for="skin_clean" class="ms-2">Чистые</label>
+				<input v-model="skin" :value="'clean'" :id="'skin_clean' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'skin_condition' + props.medcard_id" />
+				<label :for="'skin_clean' + props.medcard_id" class="ms-2">Чистые</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="skin" :value="'rash'" id="skin_rash" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="skin_condition"/>
-				<label for="skin_rash" class="ms-2">Высыпания</label>
+				<input v-model="skin" :value="'rash'" :id="'skin_rash' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'skin_condition' + props.medcard_id" />
+				<label :for="'skin_rash' + props.medcard_id" class="ms-2">Высыпания</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="skin" :value="'moist'" id="skin_moist" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="skin_condition"/>
-				<label for="skin_moist" class="ms-2">Влажные</label>
+				<input v-model="skin" :value="'moist'" :id="'skin_moist' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'skin_condition' + props.medcard_id" />
+				<label :for="'skin_moist' + props.medcard_id" class="ms-2">Влажные</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="skin" :value="'dry'" id="skin_dry" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="skin_condition"/>
-				<label for="skin_dry" class="ms-2">Сухие</label>
+				<input v-model="skin" :value="'dry'" :id="'skin_dry' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'skin_condition' + props.medcard_id" />
+				<label :for="'skin_dry' + props.medcard_id" class="ms-2">Сухие</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="skin" :value="'excoriations'" id="skin_excoriations" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="skin_condition"/>
-				<label for="skin_excoriations" class="ms-2">Экскориации</label>
+				<input v-model="skin" :value="'excoriations'" :id="'skin_excoriations' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'skin_condition' + props.medcard_id" />
+				<label :for="'skin_excoriations' + props.medcard_id" class="ms-2">Экскориации</label>
 			</div>
 		</div>
 
 		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Слизистые оболочки: </div>
 			<div class="flex items-center me-3">
-				<input v-model="mucous" :value="'clean'" id="mucous_clean" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="mucous_condition"/>
-				<label for="mucous_clean" class="ms-2">Чистые</label>
+				<input v-model="mucous" :value="'clean'" :id="'mucous_clean' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'mucous_condition' + props.medcard_id" />
+				<label :for="'mucous_clean' + props.medcard_id" class="ms-2">Чистые</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="mucous" :value="'rash'" id="mucous_rash" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="mucous_condition"/>
-				<label for="mucous_rash" class="ms-2">Высыпания</label>
+				<input v-model="mucous" :value="'rash'" :id="'mucous_rash' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'mucous_condition' + props.medcard_id" />
+				<label :for="'mucous_rash' + props.medcard_id" class="ms-2">Высыпания</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="mucous" :value="'moist'" id="mucous_moist" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="mucous_condition"/>
-				<label for="mucous_moist" class="ms-2">Влажные</label>
+				<input v-model="mucous" :value="'moist'" :id="'mucous_moist' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'mucous_condition' + props.medcard_id" />
+				<label :for="'mucous_moist' + props.medcard_id" class="ms-2">Влажные</label>
 			</div>
 			<div class="flex items-center me-3">
-				<input v-model="mucous" :value="'dry'" id="mucous_dry" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="mucous_condition"/>
-				<label for="mucous_dry" class="ms-2">Сухие</label>
+				<input v-model="mucous" :value="'dry'" :id="'mucous_dry' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'mucous_condition' + props.medcard_id" />
+				<label :for="'mucous_dry' + props.medcard_id" class="ms-2">Сухие</label>
 			</div>
 		</div>
 
 		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Дыхание: </div>
 			<div class="flex items-center me-6">
-				<input v-model="breath" :value="'vesicular'" id="breath_vesicular" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="breath"/>
-				<label for="breath_vesicular" class="ms-2">Везикулярное</label>
+				<input v-model="breath" :value="'vesicular'" :id="'breath_vesicular' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'breath' + props.medcard_id" />
+				<label :for="'breath_vesicular' + props.medcard_id" class="ms-2">Везикулярное</label>
 			</div>
 			<div class="flex items-center me-6">
-				<input v-model="breath" :value="'puerile'" id="breath_puerile" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="breath"/>
-				<label for="breath_puerile" class="ms-2">Пуэрильное</label>
+				<input v-model="breath" :value="'puerile'" :id="'breath_puerile' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'breath' + props.medcard_id" />
+				<label :for="'breath_puerile' + props.medcard_id" class="ms-2">Пуэрильное</label>
 			</div>
 			<div class="flex items-center me-6">
-				<input v-model="breath" :value="'hard'" id="breath_hard" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="breath"/>
-				<label for="breath_hard" class="ms-2">Жёсткое</label>
+				<input v-model="breath" :value="'hard'" :id="'breath_hard' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'breath' + props.medcard_id" />
+				<label :for="'breath_hard' + props.medcard_id" class="ms-2">Жёсткое</label>
 			</div>
 			<div class="flex items-center me-6">
-				<input v-model="breath" :value="'weakened'" id="breath_weakened" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="breath"/>
-				<label for="breath_weakened" class="ms-2">Ослабленное</label>
+				<input v-model="breath" :value="'weakened'" :id="'breath_weakened' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'breath' + props.medcard_id" />
+				<label :for="'breath_weakened' + props.medcard_id" class="ms-2">Ослабленное</label>
 			</div>
 		</div>
 
 		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Живот: </div>
             <div class="relative flex items-center me-3">
-				<input v-model="abdomen_tension" :value="null" type="radio" id="abdomen_none" name="abdomen" class="hidden peer/abdomen_none" />
-                <label for="abdomen_none" class="cursor-pointer peer-checked/abdomen_none:border-white-500 peer-checked/abdomen_none:border-b-2">Не выбрано</label>
+				<input v-model="abdomen_tension" :value="null" type="radio" :id="'abdomen_none' + props.medcard_id" :name="'abdomen' + props.medcard_id"  class="hidden peer/abdomen_none" />
+                <label :for="'abdomen_none' + props.medcard_id" class="cursor-pointer peer-checked/abdomen_none:border-white-500 peer-checked/abdomen_none:border-b-2">Не выбрано</label>
 				
 				<span>/</span>
 
-                <input v-model="abdomen_tension" :value="false" type="radio" id="amdomen_soft" name="abdomen" class="hidden peer/amdomen_soft" />
-                <label for="amdomen_soft" class="cursor-pointer peer-checked/amdomen_soft:border-white-500 peer-checked/amdomen_soft:border-b-2">Мягкий</label>
+                <input v-model="abdomen_tension" :value="false" type="radio" :id="'amdomen_soft' + props.medcard_id" :name="'abdomen' + props.medcard_id"  class="hidden peer/amdomen_soft" />
+                <label :for="'amdomen_soft' + props.medcard_id" class="cursor-pointer peer-checked/amdomen_soft:border-white-500 peer-checked/amdomen_soft:border-b-2">Мягкий</label>
 
                 <span>/</span>
 
-                <input v-model="abdomen_tension" :value="true" type="radio" id="abdomen_tense" name="abdomen" class="hidden peer/abdomen_tense" />
-                <label for="abdomen_tense" class="cursor-pointer peer-checked/abdomen_tense:dark:border-white-500 peer-checked/abdomen_tense:border-b-2">Напряжён</label>
+                <input v-model="abdomen_tension" :value="true" type="radio" :id="'abdomen_tense' + props.medcard_id" :name="'abdomen' + props.medcard_id"  class="hidden peer/abdomen_tense" />
+                <label :for="'abdomen_tense' + props.medcard_id" class="cursor-pointer peer-checked/abdomen_tense:dark:border-white-500 peer-checked/abdomen_tense:border-b-2">Напряжён</label>
             </div>
             <div class="relative flex items-center me-3">
-				<input v-model="abdomen_pain" :value="null" type="radio" id="abdomen_pain_none" name="abdomen_pain_status" class="hidden peer/abdomen_pain_none" />
-                <label for="abdomen_pain_none" class="cursor-pointer peer-checked/abdomen_pain_none:border-white-500 peer-checked/abdomen_pain_none:border-b-2">Не выбрано</label>
+				<input v-model="abdomen_pain" :value="null" type="radio" :id="'abdomen_pain_none' + props.medcard_id" :name="'abdomen_pain_status' + props.medcard_id"  class="hidden peer/abdomen_pain_none" />
+                <label :for="'abdomen_pain_none' + props.medcard_id" class="cursor-pointer peer-checked/abdomen_pain_none:border-white-500 peer-checked/abdomen_pain_none:border-b-2">Не выбрано</label>
 				
 				<span>/</span>
 
-                <input v-model="abdomen_pain" :value="false" type="radio" id="abdomen_not_pain" name="abdomen_pain_status" class="hidden peer/abdomen_not_pain" />
-                <label for="abdomen_not_pain" class="cursor-pointer peer-checked/abdomen_not_pain:border-white-500 peer-checked/abdomen_not_pain:border-b-2">Безболезненный</label>
+                <input v-model="abdomen_pain" :value="false" type="radio" :id="'abdomen_not_pain' + props.medcard_id" :name="'abdomen_pain_status' + props.medcard_id"  class="hidden peer/abdomen_not_pain" />
+                <label :for="'abdomen_not_pain' + props.medcard_id" class="cursor-pointer peer-checked/abdomen_not_pain:border-white-500 peer-checked/abdomen_not_pain:border-b-2">Безболезненный</label>
 
                 <span>/</span>
 
-                <input v-model="abdomen_pain" :value="true" type="radio" id="ambdomen_pain" name="abdomen_pain_status" class="hidden peer/ambdomen_pain" />
-                <label for="ambdomen_pain" class="cursor-pointer peer-checked/ambdomen_pain:dark:border-white-500 peer-checked/ambdomen_pain:border-b-2">Болезненный</label>
+                <input v-model="abdomen_pain" :value="true" type="radio" :id="'ambdomen_pain' + props.medcard_id" :name="'abdomen_pain_status' + props.medcard_id"  class="hidden peer/ambdomen_pain" />
+                <label :for="'ambdomen_pain' + props.medcard_id" class="cursor-pointer peer-checked/ambdomen_pain:dark:border-white-500 peer-checked/ambdomen_pain:border-b-2">Болезненный</label>
             </div>
 		</div>
 
 		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label class="w-2/5 sm:w-1/5">Хрипы: </label>
 			<div class="flex items-center me-10">
-				<input v-model="wheeze" :value="null" id="wheeze_none" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="wheeze"/>
-				<label for="wheeze_none" class="ms-2">Не выбрано</label>
+				<input v-model="wheeze" :value="null" :id="'wheeze_none' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'wheeze' + props.medcard_id" />
+				<label :for="'wheeze_none' + props.medcard_id" class="ms-2">Не выбрано</label>
 			</div>
 
 			<div class="flex items-center me-10">
-				<input v-model="wheeze" :value="'no'" id="wheeze_no" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="wheeze"/>
-				<label for="wheeze_no" class="ms-2">Нет</label>
+				<input v-model="wheeze" :value="'no'" :id="'wheeze_no' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'wheeze' + props.medcard_id" />
+				<label :for="'wheeze_no' + props.medcard_id" class="ms-2">Нет</label>
 			</div>
 			<div class="flex items-center me-10">
-				<input v-model="wheeze" :value="'wet'" id="wheeze_wet" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="wheeze"/>
-				<label for="wheeze_wet" class="ms-2">Влажные</label>
+				<input v-model="wheeze" :value="'wet'" :id="'wheeze_wet' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'wheeze' + props.medcard_id" />
+				<label :for="'wheeze_wet' + props.medcard_id" class="ms-2">Влажные</label>
 			</div>
 			<div class="flex items-center me-10">
-				<input v-model="wheeze" :value="'dry'" id="wheeze_dry" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" name="wheeze"/>
-				<label for="wheeze_dry" class="ms-2">Сухие</label>
+				<input v-model="wheeze" :value="'dry'" :id="'wheeze_dry' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'wheeze' + props.medcard_id" />
+				<label :for="'wheeze_dry' + props.medcard_id" class="ms-2">Сухие</label>
 			</div>
 		</div>
 
 		<div class="mb-8"></div>
 		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-			<label for="blood_pressure" class="me-5">АД</label>
+			<label :for="'blood_pressure' + props.medcard_id" class="me-5">АД</label>
 			<div class="relative flex items-center">
-				<input v-model="blood_pressure" id="blood_pressure" type="text" class="bg-transparent border-none focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
-				<label for="blood_pressure" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
+				<input v-model="blood_pressure" :id="'blood_pressure' + props.medcard_id" type="text" class="bg-transparent border-none focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
+				<label :for="'blood_pressure' + props.medcard_id" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
 			</div>
 			<span class="ml-2">мм.рт.ст</span>
 		</div>
 
 		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-			<label for="pulse" class="me-5">Пульс</label>
+			<label :for="'pulse' + props.medcard_id" class="me-5">Пульс</label>
 			<div class="relative flex items-center">
-				<input v-model="pulse" id="pulse" type="text" class="bg-transparent border-none focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
-				<label for="pulse" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
+				<input v-model="pulse" :id="'pulse' + props.medcard_id" type="text" class="bg-transparent border-none focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
+				<label :for="'pulse' + props.medcard_id" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
 			</div>
 			<span class="ml-2">.</span>
 		</div>
 
 		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-			<label for="body_temp" class="me-5">Температура тела</label>
+			<label :for="'body_temp' + props.medcard_id" class="me-5">Температура тела</label>
 			<div class="relative flex items-center">
-				<input v-model="body_temp" id="body_temp" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
-				<label for="body_temp" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
+				<input v-model="body_temp" :id="'body_temp' + props.medcard_id" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
+				<label :for="'body_temp' + props.medcard_id" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
 			</div>
 			<span class="ml-2">C.</span>
 		</div>
 
 		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-			<label for="weight" class="me-5">Вес</label>
+			<label :for="'weight' + props.medcard_id" class="me-5">Вес</label>
 			<div class="relative flex items-center">
-				<input v-model="weight" id="weight" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
-				<label for="weight" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
+				<input v-model="weight" :id="'weight' + props.medcard_id" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
+				<label :for="'weight' + props.medcard_id" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
 			</div>
 			<span class="ml-2">кг.</span>
 		</div>
 
 		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-			<label for="height" class="me-5">Рост</label>
+			<label :for="'height' + props.medcard_id" class="me-5">Рост</label>
 			<div class="relative flex items-center">
-				<input v-model="height" id="height" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
-				<label for="height" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
+				<input v-model="height" :id="'height' + props.medcard_id" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
+				<label :for="'height' + props.medcard_id" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
 			</div>
 			<span class="ml-2">см.</span>
 		</div>
 
 		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
-			<label for="body_mass_index" class="me-5">ИМТ</label>
+			<label :for="'body_mass_index' + props.medcard_id" class="me-5">ИМТ</label>
 			<div class="relative flex items-center">
-				<input v-model="body_mass_index" id="body_mass_index" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
-				<label for="body_mass_index" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
+				<input v-model="body_mass_index" :id="'body_mass_index' + props.medcard_id" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
+				<label :for="'body_mass_index' + props.medcard_id" class="absolute bottom-0 left-0 text-gray-500 pointer-events-none">___________</label>
 			</div>
 			<span class="ml-2">.</span>
 		</div>
 
 		<div class="flex justify-end">
-			<PrimaryBtn @click="save(client_id)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
+			<PrimaryBtn @click="save(medcard_id)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
 		</div>
 	</div>
 </template>
