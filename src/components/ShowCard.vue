@@ -11,17 +11,18 @@ import { authStore, useClientStore } from '@/stores/auth'
 import moment from 'moment'
 import Medcard from './Medcard.vue';
 import Button from 'primevue/button';
-import { nextTick } from 'vue'
 
 const clientStore = useClientStore()
 
 const services = ref([])
+let employees = ref([])
 
 let diagnoses = ref([])
 let appointments = ref([])
 const opened_medcards = ref(new Map())
 let is_new_medcard_opened = ref(false);
 const medcards = ref([]);
+
 
 let client_id = computed(() => {
 	let c = clientStore.client
@@ -36,6 +37,10 @@ watchEffect(async () => {
 	await get_services()
 	await fetch_diagnoses(client_id.value)
 	await fetch_appointments(client_id.value)
+})
+
+onMounted(async () => {
+	await fetch_employees();
 })
 
 async function get_services() {
@@ -55,6 +60,12 @@ async function get_services() {
 	})
 		
 	authStore.set('services', services.value)
+}
+
+async function fetch_employees() {
+	let data = await auth.get('get_all_employees')
+	if (data === null) return
+	employees.value = data.filter((el) => el.is_admin === 0)
 }
 
 async function fetch_services() {
@@ -90,7 +101,8 @@ async function fetch_medcards(client_id) {
 
 	medcards.value = data['data'].map((el) => {
 		el.created_at = moment.unix(el.created_at).format('DD.MM.YYYY hh:mm:ss'),
-		el.id
+		el.id,
+		el.creator_id
 		return el
 	}).sort(compare_idx_of_objects);
 }
@@ -156,7 +168,6 @@ async function toggle_medcard(id) {
 
 	if (res === undefined) {
 		opened_medcards.value.set(id, true);
-		await nextTick();
 		return;
 	}
 	opened_medcards.value.delete(id);
@@ -182,6 +193,15 @@ async function delete_medcard(id, client_id) {
 	await fetch_medcards(client_id);
 }
 
+function get_employee_by_id(id) {
+	for (const emp of employees.value) {
+		if (emp.id == id) {
+			return emp
+		}
+	}
+	return ''
+}
+
 </script>
 
 <template>
@@ -193,26 +213,18 @@ async function delete_medcard(id, client_id) {
 
 		<div v-for="medcard in medcards">
 			<span class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">
-				<Button @click="toggle_medcard(medcard.id)">{{ medcard.created_at }}</Button>
+				<Button @click="toggle_medcard(medcard.id)">Медкарта №{{ medcard.id }} от {{ medcard.created_at }}. Сотрудник {{ get_employee_by_id(medcard.creator_id).full_name }}</Button>
 				<Button icon="pi pi-trash" @click="delete_medcard(medcard.id, client_id)" />
 			</span>
 			<div class="mb-4"/>
 				<transition name="slide">
 					<div v-if="opened_medcards.has(medcard.id)" class="border rounded-lg p-3">
-						<Medcard :client_id="client_id" :medcard_id="medcard.id"/>
+						<Medcard :services="services" :employees="employees" :client_id="client_id" :medcard_id="medcard.id"/>
 					</div>
 				</transition>
 			<div class="mb-4"/>
 		</div>
 
-		<div class="font-bold mb-2">Новый диагноз</div>
-		<AddDiagnosis :services="services" :client_id="client_id"
-			:callback="() => fetch_diagnoses(client_id) "/>
-
-		<div class="mb-5">
-		<div class="font-bold mb-2">Диагнозы</div>
-		<Diagnoses :data="diagnoses" :fetch_appointments="() => fetch_appointments(client_id) " :fetch_diagnoses="() => fetch_diagnoses(client_id) " class="mb-5" />
-		</div>
 		<hr class="mb-8">
 
 		<div class="mb-5">

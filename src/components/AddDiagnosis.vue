@@ -14,7 +14,7 @@ let employees = ref([])
 onMounted(async () => {
 	let data = await auth.get('get_all_employees')
 	if (data === null) return
-	employees.value = data.filter((el) => el.is_admin === false)
+	employees.value = data.filter((el) => el.is_admin === 0)
 })
 
 async function add_diagnosis(client_id, text, employee_id, service) {

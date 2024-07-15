@@ -1,5 +1,24 @@
 <script setup>
-const props = defineProps(['client_id', 'medcard_id'])
+import { ref } from 'vue'
+const props = defineProps(['client_id', 'medcard_id', 'services', 'employees'])
+let service = ref('')
+let employee_id = ref('')
+
+async function add_diagnosis(client_id, employee_id, service) {
+	let data = await auth.post('add_diagnosis', {
+		body: JSON.stringify({
+			client_id: client_id,
+			text: '',
+			by_employee_id: employee_id,
+			service_name: service,
+		})
+	})
+	if (data === null) return
+
+	if (data.error === "") {
+		
+	}
+}
 </script>
 
 <template>
@@ -58,7 +77,18 @@ const props = defineProps(['client_id', 'medcard_id'])
 				</div>
 			</transition>
 			<div class="mb-4"/>
+			
+			<div class="mb-4">Выберите услугу</div>
 
+			<v-select  v-model="service" color="primary" :options="services" class="px-2 py-1 rounded-lg me-5 mb-3 mt-4 dark:bg-gray-700 dark:text-black">
+			</v-select>
+
+			<select v-model="employee_id" class="px-2 py-1 rounded-lg dark:bg-gray-700 me-5">
+				<option disabled value="" selected>Выбрать сотрудника</option>
+				<option v-for="el in employees" class="" :value="el.id">{{ el.full_name }}</option>
+			</select>
+
+			<PrimaryBtn @click="add_diagnosis(client_id, employee_id, service)" class="block mb-5">Добавить</PrimaryBtn>
 	</div>
 </template>
 
@@ -69,6 +99,8 @@ const props = defineProps(['client_id', 'medcard_id'])
 	import DetailedDiagnosis from './DetailedDiagnosis.vue';
 	import TreatmentPlan from './TreatmentPlan.vue';
 	import Additional from './Additional.vue';
+	import PrimaryBtn from './buttons/PrimaryBtn.vue';
+	import { auth } from '@/helpers'
 
 	export default {
 		name: 'App',
