@@ -24,6 +24,14 @@ class AuthStore {
 		return this.set('isAdmin', val)
 	}
 
+	need2FA() {
+		return this.get('need2fa') === true
+	}
+
+	setNeed2FA(val) {
+		return this.set('need2fa', val)
+	}
+
 	get(key) {
 		let val = sessionStorage.getItem(key)
 		if (!val) return val

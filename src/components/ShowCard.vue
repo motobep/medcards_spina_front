@@ -100,7 +100,7 @@ async function fetch_medcards(client_id) {
 	};
 
 	medcards.value = data['data'].map((el) => {
-		el.created_at = moment.unix(el.created_at).format('DD.MM.YYYY hh:mm:ss'),
+		el.created_at = moment.unix(el.created_at).format('DD.MM.YYYY kk:mm:ss'),
 		el.id,
 		el.creator_id
 		return el
