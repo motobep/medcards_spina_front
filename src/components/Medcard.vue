@@ -23,7 +23,6 @@ async function add_diagnosis(client_id, employee_id, service) {
 
 <template>
 	<div>
-	
 			<span @click="toggleComplaints" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Жалобы</span>
 			<div class="mb-4"/>
 			<transition name="slide">

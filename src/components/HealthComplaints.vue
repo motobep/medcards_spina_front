@@ -66,7 +66,25 @@ onMounted(async () => {
 
 <template>
   <div>
-    <div class="mb-2"></div>
+    <!-- <v-tabs
+      
+      show-arrows>
+      <v-tab>01.02.2024</v-tab>
+      <v-tab>02.02.2024</v-tab>
+      <v-tab>03.02.2024</v-tab>
+      <v-tab>04.02.2024</v-tab>
+      <v-tab>05.02.2024</v-tab>
+      <v-tab>06.02.2024</v-tab>
+      <v-tab>07.02.2024</v-tab>
+      <v-tab>08.02.2024</v-tab>
+      <v-tab>09.02.2024</v-tab>
+      <v-tab>10.02.2024</v-tab>
+      <v-tab>11.02.2024</v-tab>
+      <v-tab>12.02.2024</v-tab>
+
+    </v-tabs> -->
+
+    <div class="mb-0"></div>
     <input
       type="checkbox"
       :id="'checkbox1' + props.medcard_id"
@@ -75,7 +93,7 @@ onMounted(async () => {
     />
     <label :for="'checkbox1' + props.medcard_id" class="ms-2">Нарушение функции опорно-двигательного аппарата</label>
 
-    <div class="mb-2"></div>
+    <div class="mb-0"></div>
     <input
       type="checkbox"
       :id="'checkbox2' + props.medcard_id"
@@ -84,7 +102,7 @@ onMounted(async () => {
     />
     <label :for="'checkbox2' + props.medcard_id" class="ms-2">Нарушение функции дыхательной системы</label>
 
-    <div class="mb-2"></div>
+    < <div class="mb-0"></div>
     <input
       type="checkbox"
       :id="'checkbox3' + props.medcard_id"
@@ -93,7 +111,7 @@ onMounted(async () => {
     />
     <label :for="'checkbox3' + props.medcard_id" class="ms-2">Нарушение функции органов желудочно-кишечного тракта</label>
 
-    <div class="mb-2"></div>
+    <div class="mb-0"></div>
     <input
       type="checkbox"
       :id="'checkbox4' + props.medcard_id"
@@ -102,7 +120,7 @@ onMounted(async () => {
     />
     <label :for="'checkbox4' + props.medcard_id" class="ms-2">Нарушение функции мочевыделительной и половой систем</label>
 
-    <div class="mb-2"></div>
+    <div class="mb-0"></div>
     <input
       type="checkbox"
       :id="'checkbox5' + props.medcard_id"
@@ -111,7 +129,7 @@ onMounted(async () => {
     />
     <label :for="'checkbox5' + props.medcard_id" class="ms-2">Нарушение функции сердечно-сосудистой системы</label>
 
-    <div class="mb-2"></div>
+    <div class="mb-0"></div>
     <input
       type="checkbox"
       :id="'checkbox6' + props.medcard_id"
@@ -120,7 +138,7 @@ onMounted(async () => {
     />
     <label :for="'checkbox6' + props.medcard_id" class="ms-2">Болевой синдром</label>
 
-    <div class="mb-4"></div>
+    <div class="mb-0"></div>
 
     <textarea
       v-model="additional_text"
@@ -128,7 +146,7 @@ onMounted(async () => {
       placeholder="Дополнительно"
     ></textarea>
 
-		<div class="mb-2"></div>
+    <div class="mb-0"></div>
 		<div class="flex justify-end">
 			<PrimaryBtn  @click="save(medcard_id,
 			 musculoskeletal_dysfunction,
@@ -137,11 +155,8 @@ onMounted(async () => {
   urinary_and_reproductive_systems_dysfunction,
   cardiovascular_dysfunction,
   pain_syndrome,
-  additional_text)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
+  additional_text)" class="block mb-0 content-end">Сохранить</PrimaryBtn>
 		</div>
 		
 	</div>
 </template>
-
-<style>
-</style>

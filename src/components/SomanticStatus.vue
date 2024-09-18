@@ -90,7 +90,7 @@ onMounted(async () => {
 
 <template>
 	<div @click="console.log(general_status)">
-		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Общее состояние: </div>
 			<div class="flex items-center me-3">
 				<input v-model="general_status" :value="null" :id="'gen_health_status_none' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'gen_health_status' + props.medcard_id" />
@@ -111,7 +111,7 @@ onMounted(async () => {
 
 		</div>
 
-		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Тип телосложения: </div>
 			<div class="flex items-center me-3">
 				<input v-model="body_type" :value="null" :id="'body_type_none' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'body_type' + props.medcard_id" />
@@ -131,7 +131,7 @@ onMounted(async () => {
 			</div>
 		</div>
 
-		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Кожные покровы: </div>
 			<div class="flex items-center me-3">
 				<input v-model="skin" :value="'clean'" :id="'skin_clean' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'skin_condition' + props.medcard_id" />
@@ -155,7 +155,7 @@ onMounted(async () => {
 			</div>
 		</div>
 
-		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Слизистые оболочки: </div>
 			<div class="flex items-center me-3">
 				<input v-model="mucous" :value="'clean'" :id="'mucous_clean' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'mucous_condition' + props.medcard_id" />
@@ -175,7 +175,7 @@ onMounted(async () => {
 			</div>
 		</div>
 
-		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Дыхание: </div>
 			<div class="flex items-center me-6">
 				<input v-model="breath" :value="'vesicular'" :id="'breath_vesicular' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" :name="'breath' + props.medcard_id" />
@@ -195,7 +195,7 @@ onMounted(async () => {
 			</div>
 		</div>
 
-		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Живот: </div>
             <div class="relative flex items-center me-3">
 				<input v-model="abdomen_tension" :value="null" type="radio" :id="'abdomen_none' + props.medcard_id" :name="'abdomen' + props.medcard_id"  class="hidden peer/abdomen_none" />
@@ -227,7 +227,7 @@ onMounted(async () => {
             </div>
 		</div>
 
-		<div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label class="w-2/5 sm:w-1/5">Хрипы: </label>
 			<div class="flex items-center me-10">
 				<input v-model="wheeze" :value="null" :id="'wheeze_none' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'wheeze' + props.medcard_id" />
@@ -248,8 +248,8 @@ onMounted(async () => {
 			</div>
 		</div>
 
-		<div class="mb-8"></div>
-		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="mb-2"></div>
+		<div class="flex items-center mb-0 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label :for="'blood_pressure' + props.medcard_id" class="me-5">АД</label>
 			<div class="relative flex items-center">
 				<input v-model="blood_pressure" :id="'blood_pressure' + props.medcard_id" type="text" class="bg-transparent border-none focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
@@ -258,7 +258,7 @@ onMounted(async () => {
 			<span class="ml-2">мм.рт.ст</span>
 		</div>
 
-		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="flex items-center mb-0 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label :for="'pulse' + props.medcard_id" class="me-5">Пульс</label>
 			<div class="relative flex items-center">
 				<input v-model="pulse" :id="'pulse' + props.medcard_id" type="text" class="bg-transparent border-none focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
@@ -267,7 +267,7 @@ onMounted(async () => {
 			<span class="ml-2">.</span>
 		</div>
 
-		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="flex items-center mb-0 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label :for="'body_temp' + props.medcard_id" class="me-5">Температура тела</label>
 			<div class="relative flex items-center">
 				<input v-model="body_temp" :id="'body_temp' + props.medcard_id" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
@@ -276,7 +276,7 @@ onMounted(async () => {
 			<span class="ml-2">C.</span>
 		</div>
 
-		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="flex items-center mb-0 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label :for="'weight' + props.medcard_id" class="me-5">Вес</label>
 			<div class="relative flex items-center">
 				<input v-model="weight" :id="'weight' + props.medcard_id" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
@@ -285,7 +285,7 @@ onMounted(async () => {
 			<span class="ml-2">кг.</span>
 		</div>
 
-		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="flex items-center mb-0 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label :for="'height' + props.medcard_id" class="me-5">Рост</label>
 			<div class="relative flex items-center">
 				<input v-model="height" :id="'height' + props.medcard_id" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
@@ -294,7 +294,7 @@ onMounted(async () => {
 			<span class="ml-2">см.</span>
 		</div>
 
-		<div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
+		<div class="flex items-center mb-0 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label :for="'body_mass_index' + props.medcard_id" class="me-5">ИМТ</label>
 			<div class="relative flex items-center">
 				<input v-model="body_mass_index" :id="'body_mass_index' + props.medcard_id" type="text" class="bg-transparent border-none  focus:outline-none w-20 px-2 py-1 text-center placeholder-transparent" placeholder="____">
@@ -304,7 +304,7 @@ onMounted(async () => {
 		</div>
 
 		<div class="flex justify-end">
-			<PrimaryBtn @click="save(medcard_id)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
+			<PrimaryBtn @click="save(medcard_id)" class="block mb-0	 content-end">Сохранить</PrimaryBtn>
 		</div>
 	</div>
 </template>

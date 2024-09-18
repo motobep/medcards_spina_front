@@ -52,18 +52,18 @@ onMounted(async () => {
     <div>
         <div class="font-bold mb-4">Основное заболевание</div>
         <textarea v-model="main_disease" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
 
         <div class="font-bold mb-4">Осложнение</div>
         <textarea v-model="complications" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
 
         <div class="font-bold mb-4">Сопутствующие заболевания</div>
         <textarea v-model="related_diseases" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
 
         <div class="flex justify-end">
-			<PrimaryBtn @click="save(medcard_id)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
+			<PrimaryBtn @click="save(medcard_id)" class="block mb-0 content-end">Сохранить</PrimaryBtn>
 		</div>
     </div>
 </template>

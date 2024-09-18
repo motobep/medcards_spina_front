@@ -62,20 +62,19 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-	let isAuth = jwtStore.get() !== null
-	let need2FA = authStore.need2FA() === true;
+		let isAuth = jwtStore.get() !== null
+		let need2FA = authStore.need2FA() === true;
 
-	if (!isAuth) {
-		if (need2FA) {
-			if (to.name !== 'login2fa') {
-				return { name: 'login2fa'}
+		if (!isAuth) {
+			if (need2FA) {
+				if (to.name !== 'login2fa') {
+					return { name: 'login2fa'}
+				}
+			} else {
+				if (to.name !== 'login')
+				return { name: 'login' }
 			}
-		} else {
-			if (to.name !== 'login')
-			return { name: 'login' }
-		}
-		
-	}
+		}		
 
 
 })

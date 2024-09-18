@@ -122,7 +122,7 @@ async function fetch_clients(company_id, date) {
 					<PrimaryBtn>Медкарта</PrimaryBtn>
 				</RouterLink>
 
-				<div v-if="clientStore.client.id && company_selected" class="border rounded-lg p-4 ">
+				<div v-if="clientStore.client.id && company_selected" class="border rounded-lg p-4">
 					<RouterView />
 				</div>
 

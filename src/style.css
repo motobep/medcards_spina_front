@@ -31,6 +31,8 @@ body {
 	background-clip: padding-box;
 }
 
+
+
 .table-gapped td {
 	padding: 0.25rem 1rem;
 }
@@ -80,6 +82,13 @@ body {
 
 }
 
-.dropdown {
-  
+:root {
+  --v-border-color: 255, 255, 255; /* Цвет границ для светлой темы */
+  --v-border-opacity: 0.5; /* Прозрачность границ */
+}
+
+/* Для темной темы */
+.dark {
+  --v-border-color: 0, 0, 0; /* Цвет границ для темной темы */
+  --v-border-opacity: 0.5; /* Прозрачность границ */
 }

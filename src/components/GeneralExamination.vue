@@ -76,8 +76,8 @@ onMounted(async () => {
 
 <template>
     <div>
-        <div class="font-bold mb-2">Изгибы позвоночника в саггитальной плоскости: </div>
-        <div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
+        <div class="font-bold mb-0">Изгибы позвоночника в саггитальной плоскости: </div>
+        <div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5">Шейный лордоз: </div>
 			<div class="flex items-center me-3">
 				<input v-model="cervical_lordosis" :value="null" :id="'cervical_lordosis_none' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'cervical_lordosis_status' + props.medcard_id"/>
@@ -97,7 +97,7 @@ onMounted(async () => {
 			</div>
 		</div>
 
-        <div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
+        <div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5">Грудной кифоз: </div>
 			<div class="flex items-center me-3">
 				<input v-model="thoracic_kyphosis" :value="null" :id="'thoracic_kyphosis_none' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'thoracic_kyphosis_status' + props.medcard_id"/>
@@ -117,7 +117,7 @@ onMounted(async () => {
 			</div>
 		</div>
 
-        <div class="mb-2 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
+        <div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5">Поясничный лордоз: </div>
 			<div class="flex items-center me-3">
 				<input v-model="lumbar_lordosis" :value="null" :id="'lumbar_lordosis_none' + props.medcard_id" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="radio" :name="'lumbar_lordosis_status' + props.medcard_id"/>
@@ -138,7 +138,7 @@ onMounted(async () => {
 		</div>
 
         
-        <div class="mb-8"/>
+        <div class="mb-2"/>
         <div class="w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
             <label class="w-2/5 sm:w-1/5 font-bold" :for="'general' + props.medcard_id">Мышечный тонус: </label>
 			<div class="flex items-center me-3">
@@ -155,8 +155,8 @@ onMounted(async () => {
 			</div>
         </div>
 
-        <div class="mb-8"/>
-        <div class="font-bold mb-2">Активные тесты: </div>
+        <div class="mb-2"/>
+        <div class="font-bold mb-0">Активные тесты: </div>
         
         <div class="w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
             <label class="w-1/5 sm:w-1/5" :for="'general' + props.medcard_id">Общая флексия: </label>
@@ -315,7 +315,7 @@ onMounted(async () => {
         </div>
 
 		<div class="flex justify-end">
-			<PrimaryBtn @click="save(medcard_id)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
+			<PrimaryBtn @click="save(medcard_id)" class="block mb-0 content-end">Сохранить</PrimaryBtn>
 		</div>
 
     </div>

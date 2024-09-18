@@ -168,56 +168,56 @@ onMounted(async () => {
             
         </div>
       
-        <div class="mb-6"/>
+        <div class="mb-0"/>
         <div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label :for="'file_input' + props.medcard_id" class="w-1/12 sm:w-1/12">МРТ</label>
             <a v-if="mri_file_uuid" class="w-1/6" v-bind:href="'/api/get_file?uuid='+mri_file_uuid">Скачать</a>
             <a v-else class="w-1/6">Файл не найден</a>
             <input @input="on_file_changed($event, 'mri')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" :id="'file_input' + props.medcard_id" type="file">
 		</div>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
         <div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label :for="'file_input' + props.medcard_id" class="w-1/12 sm:w-1/12">УЗИ</label>
             <a v-if="ultrasound_file_uuid" class="w-1/6" v-bind:href="'/api/get_file?uuid='+ultrasound_file_uuid">Скачать</a>
             <a v-else class="w-1/6">Файл не найден</a>
             <input @input="on_file_changed($event, 'ultrasound')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" :id="'file_input' + props.medcard_id" type="file">
 		</div>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
         <div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
             <label :for="'file_input' + props.medcard_id" class="w-1/12 sm:w-1/12">Лаб</label>
             <a v-if="lab_file_uuid" class="w-1/6" v-bind:href="'/api/get_file?uuid='+lab_file_uuid">Скачать</a>
             <a v-else class="w-1/6">Файл не найден</a>
             <input @input="on_file_changed($event, 'lab')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" :id="'file_input' + props.medcard_id" type="file">
 		</div>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
         <div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label :for="'file_input' + props.medcard_id" class="w-1/12 sm:w-1/12">Rg</label>
             <a v-if="rg_file_uuid" class="w-1/6" v-bind:href="'/api/get_file?uuid='+rg_file_uuid">Скачать</a>
             <a v-else class="w-1/6">Файл не найден</a>
             <input @input="on_file_changed($event, 'rg')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" :id="'file_input' + props.medcard_id" type="file">
 		</div>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
         <div class="flex items-center mb-2 w-full p-10 sm:p-6 lg:p-5 xl:p-0">
 			<label :for="'file_input' + props.medcard_id" class="w-1/12 sm:w-1/12">Кт</label>
             <a v-if="ct_file_uuid" class="w-1/6" v-bind:href="'/api/get_file?uuid='+ct_file_uuid">Скачать</a>
             <a v-else class="w-1/6">Файл не найден</a>
             <input @input="on_file_changed($event, 'ct')" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" :id="'file_input' + props.medcard_id" type="file">
 		</div>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
 
         <div class="font-bold mb-4">Медикаментозная терапия</div>
         <textarea v-model="drug_therapy" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
 
         <div class="font-bold mb-4">Не медикаментозная терапия</div>
         <textarea v-model="non_drug_therapy" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
 
         <textarea v-model="comment" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700" placeholder="Комментарий записи..."/>
-        <div class="mb-4"/>
+        <div class="mb-0"/>
 
         <div class="flex justify-end">
-			<PrimaryBtn @click="save(medcard_id)" class="block mb-5 content-end">Сохранить</PrimaryBtn>
+			<PrimaryBtn @click="save(medcard_id)" class="block mb-0 content-end">Сохранить</PrimaryBtn>
 		</div>
     </div>
 </template>
