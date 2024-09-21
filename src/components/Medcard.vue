@@ -32,24 +32,6 @@ async function add_diagnosis(client_id, employee_id, service) {
 			</transition>
 			<div class="mb-4"/>
 
-			<span @click="toggleSomanticStatus" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Сомантический статус</span>
-			<div class="mb-4"/>
-			<transition name="slide">
-				<div v-if="showSomanticStatus" class="border rounded-lg p-3">
-					<SomanticStatus :medcard_id="medcard_id" :client_id="client_id"/>
-				</div>
-			</transition>
-			<div class="mb-4"/>
-
-			<span @click="toggleGeneralExamination" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Общий осмотр</span>
-			<div class="mb-4"/>
-			<transition name="slide">
-				<div v-if="showGeneralExamination" class="border rounded-lg p-3">
-					<GeneralExamination :medcard_id="medcard_id" :client_id="client_id"/>
-				</div>
-			</transition>
-			<div class="mb-4"/>
-
 			<span @click="toggleDetailedDiagnosis" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Диагнозы</span>
 			<div class="mb-4"/>
 			<transition name="slide">
@@ -75,19 +57,22 @@ async function add_diagnosis(client_id, employee_id, service) {
 					<Additional :medcard_id="medcard_id" :client_id="client_id"/>
 				</div>
 			</transition>
-			<div class="mb-4"/>
 			
-			<div class="mb-4">Выберите услугу</div>
+			<span @click="toggleSomanticStatus" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Сомантический статус</span>
+			<div class="mb-4"/>
+			<transition name="slide">
+				<div v-if="showSomanticStatus" class="border rounded-lg p-3">
+					<SomanticStatus :medcard_id="medcard_id" :client_id="client_id"/>
+				</div>
+			</transition>
 
-			<v-select  v-model="service" color="primary" :options="services" class="px-2 py-1 rounded-lg me-5 mb-3 mt-4 dark:bg-gray-700 dark:text-black">
-			</v-select>
-
-			<select v-model="employee_id" class="px-2 py-1 rounded-lg dark:bg-gray-700 me-5">
-				<option disabled value="" selected>Выбрать сотрудника</option>
-				<option v-for="el in employees" class="" :value="el.id">{{ el.full_name }}</option>
-			</select>
-
-			<PrimaryBtn @click="add_diagnosis(client_id, employee_id, service)" class="block mb-5">Добавить</PrimaryBtn>
+			<span @click="toggleGeneralExamination" icon='pi-arrow-down' class="text-lg font-bold bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg cursor-pointer">Общий осмотр</span>
+			<div class="mb-4"/>
+			<transition name="slide">
+				<div v-if="showGeneralExamination" class="border rounded-lg p-3">
+					<GeneralExamination :medcard_id="medcard_id" :client_id="client_id"/>
+				</div>
+			</transition>
 	</div>
 </template>
 

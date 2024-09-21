@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { auth } from '@/helpers'
 const props = defineProps(['client_id', 'medcard_id'])
 
-const main_disease = ref('');
+const doctors_report = ref('');
 const complications = ref('');
 const related_diseases = ref('');
 
@@ -14,7 +14,7 @@ async function save(medcard_id) {
 		},
     body: JSON.stringify({
         medcard_id: medcard_id,
-		    main_disease: main_disease.value,
+		    doctors_report: doctors_report.value,
         complications: complications.value,
         related_diseases: related_diseases.value,
     }),
@@ -35,7 +35,7 @@ async function fetch_detailed_diagnosis(medcard_id) {
 		return;
 	}
 	
-	main_disease.value = data.main_disease;
+	doctors_report.value = data.doctors_report;
 	complications.value = data.complications;
 	related_diseases.value = data.related_diseases;
 }
@@ -50,8 +50,8 @@ onMounted(async () => {
 
 <template>
     <div>
-        <div class="font-bold mb-4">Основное заболевание</div>
-        <textarea v-model="main_disease" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
+        <div class="font-bold mb-4">Заключение</div>
+        <textarea v-model="doctors_report" class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"/>
         <div class="mb-0"/>
 
         <div class="font-bold mb-4">Осложнение</div>

@@ -89,7 +89,7 @@ onMounted(async () => {
 </script>
 
 <template>
-	<div @click="console.log(general_status)">
+	<div>
 		<div class="mb-0 w-full flex-none flex items-center p-10 sm:p-6 lg:p-5 xl:p-0">
 			<div class="w-2/5 sm:w-1/5" >Общее состояние: </div>
 			<div class="flex items-center me-3">
