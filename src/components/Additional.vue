@@ -17,7 +17,7 @@ const rg_files = ref([]);
 const ct_file_uuids = ref([]);
 const ct_files = ref([]);
 const drug_therapy = ref(null);
-const recomendations = ref(null);
+const recommendations = ref(null);
 const comment = ref(null);
 
 // Функция для получения файлов по UUID
@@ -94,7 +94,7 @@ async function save(medcard_id) {
             rg_file_ids: rg_file_uuids.value,
             ct_file_ids: ct_file_uuids.value,
             drug_therapy: drug_therapy.value,
-            recomendations: recomendations.value,
+            recommendations: recommendations.value,
             comment: comment.value
         }),
     });
@@ -130,7 +130,7 @@ async function fetch_additional_info(medcard_id) {
     ct_file_uuids.value = data.ct_file_ids || [];
     ct_files.value = data.ct_files || [];
     drug_therapy.value = data.drug_therapy;
-    recomendations.value = data.recomendations;
+    recommendations.value = data.recommendations;
     comment.value = data.comment;
 }
 
@@ -309,7 +309,7 @@ onMounted(async () => {
 
         <!-- Рекомендации и комментарии -->
         <div class="font-bold mb-4">Рекомендации</div>
-        <textarea v-model="recomendations" 
+        <textarea v-model="recommendations" 
                   class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"></textarea>
         <div class="mb-0"></div>
         <textarea v-model="comment" 
