@@ -47,7 +47,7 @@ async function save_detailed_diagnosis(medcard_id, diagnosis) {
  * @param {number} medcard_id - ID медкарты
  */
 async function fetch_detailed_diagnosis(medcard_id) {
-  let response = await auth.post('get_detailed_diagnosis', {
+  let response = await auth.post('get_detailed_diagnoses', {
     headers: {
       'Content-Type': 'application/json',
     },
