@@ -64,7 +64,7 @@ async function delete_health_complaints(complaint) {
  * @param {number} medcard_id - ID медкарты
  */
 async function fetch_health_complaints(client_id, medcard_id) {
-  try {
+
     const response = await auth.post('get_health_complaints', {
       body: JSON.stringify({
         yclients_client_id: client_id,
@@ -101,10 +101,6 @@ async function fetch_health_complaints(client_id, medcard_id) {
     if (complaints_entries.value.length > 0 && selected_complaint_id.value === null) {
       selected_complaint_id.value = complaints_entries.value[complaints_entries.value.length - 1].id;
     }
-
-  } catch (error) {
-    console.error('Ошибка при получении жалоб:', error);
-  }
 }
 
 onMounted(async () => {
@@ -113,7 +109,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div @click="console.log(selected_complaint_id.value)">
+  <div>
     <!-- Вкладки для отображения жалоб по датам -->
     <v-tabs
       show-arrows
@@ -127,37 +123,38 @@ onMounted(async () => {
         {{ complaint.created_at }}
       </v-tab>
     </v-tabs>
+    <div v-if="selected_complaint !== null" >
+      <!-- Поле для редактирования дополнительного текста выбранной жалобы -->
+      <textarea
+        v-model="selected_complaint.additional_text"
+        class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"
+        placeholder="Дополнительно"
+      ></textarea>
 
-    <!-- Поле для редактирования дополнительного текста выбранной жалобы -->
-    <textarea
-      v-if="selected_complaint !== null"
-      v-model="selected_complaint.additional_text"
-      class="border border-gray-500 w-11/12 rounded-xl p-3 dark:bg-gray-700"
-      placeholder="Дополнительно"
-    ></textarea>
+      <!-- Кнопка сохранения изменений -->
+      <div class="mb-0"></div>
+      <div v-if="selected_complaint_id !== null && selected_complaint_id === -1" class="flex justify-end">
+        <PrimaryBtn 
+          @click="save_health_complaints(props.medcard_id, selected_complaint)" 
+          class="block mb-0 content-end"
+          :disabled="selected_complaint === null"
+        >
+          Добавить
+        </PrimaryBtn>
+      </div>
+      <div v-else class="flex justify-end">
+        <PrimaryBtn 
+          @click="delete_health_complaints(selected_complaint)" 
+          class="block mb-0 content-end"
+          :disabled="selected_complaint === null"
+        >
+          Удалить
+        </PrimaryBtn>
+      </div>
+    </div>
     <div v-else class="text-gray-500 p-3">
-      Пожалуйста, выберите жалобу из списка для редактирования.
-    </div>
-
-    <!-- Кнопка сохранения изменений -->
-    <div class="mb-0"></div>
-    <div v-if="selected_complaint_id !== null && selected_complaint_id === -1" class="flex justify-end">
-      <PrimaryBtn 
-        @click="save_health_complaints(props.medcard_id, selected_complaint)" 
-        class="block mb-0 content-end"
-        :disabled="selected_complaint === null"
-      >
-        Добавить
-      </PrimaryBtn>
-    </div>
-    <div v-else class="flex justify-end">
-      <PrimaryBtn 
-        @click="delete_health_complaints(selected_complaint)" 
-        class="block mb-0 content-end"
-        :disabled="selected_complaint === null"
-      >
-        Удалить
-      </PrimaryBtn>
+      Пожалуйста, выберите жалобу из списка.
     </div>
   </div>
+ 
 </template>
