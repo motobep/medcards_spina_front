@@ -16,7 +16,6 @@ const rg_file_uuids = ref([]);
 const rg_files = ref([]);
 const ct_file_uuids = ref([]);
 const ct_files = ref([]);
-const drug_therapy = ref(null);
 const recommendations = ref(null);
 const comment = ref(null);
 
@@ -93,7 +92,6 @@ async function save(medcard_id) {
             lab_file_ids: lab_file_uuids.value,
             rg_file_ids: rg_file_uuids.value,
             ct_file_ids: ct_file_uuids.value,
-            drug_therapy: drug_therapy.value,
             recommendations: recommendations.value,
             comment: comment.value
         }),
@@ -129,7 +127,6 @@ async function fetch_additional_info(medcard_id) {
     rg_files.value = data.rg_files || [];
     ct_file_uuids.value = data.ct_file_ids || [];
     ct_files.value = data.ct_files || [];
-    drug_therapy.value = data.drug_therapy;
     recommendations.value = data.recommendations;
     comment.value = data.comment;
 }

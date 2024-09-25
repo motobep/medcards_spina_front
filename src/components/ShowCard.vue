@@ -1,10 +1,6 @@
 <script setup>
-import Diagnoses from '@components/Diagnoses.vue';
-import Appointments from '@components/Appointments.vue';
-import CreateServices from '@components/CreateServices.vue';
-import AddDiagnosis from '@components/AddDiagnosis.vue'
 import 'primeicons/primeicons.css';
-
+import { compare_idx_of_objects } from '@/utils'
 import { ref, onMounted, watchEffect, computed } from 'vue'
 import { auth } from '@/helpers'
 import { authStore, useClientStore } from '@/stores/auth'
@@ -107,11 +103,6 @@ async function fetch_medcards(client_id) {
 	}).sort(compare_idx_of_objects);
 }
 
-function compare_idx_of_objects(a, b) {
-	if (a.id > b.id) return -1
-	if (a.id < b.id) return 1
-	return 0
-}
 
 async function fetch_appointments(client_id) {
 	let data = await auth.post('get_appointments', {
@@ -225,17 +216,5 @@ function get_employee_by_id(id) {
 			<div class="mb-4"/>
 		</div>
 
-		<hr class="mb-8">
-
-		<div class="mb-5">
-			<div class="font-bold mb-2">Добавить назначение</div>
-			<CreateServices :list="services" :add_handler="(service, amount) => add_appointment(client_id, service, amount)" />
-
-			<div class="mb-4"></div>
-
-			<div class="font-bold mb-2">Назначения</div>
-			<Appointments :data="appointments" :accept_handler="accept_visit" :use_accept="false" />
-
-		</div>
 	</div>
 </template>
