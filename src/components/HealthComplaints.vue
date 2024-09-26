@@ -25,7 +25,6 @@ const selected_complaint = computed(() => {
 async function save_health_complaints(medcard_id, complaint) {
   if (!complaint) return;
 
-  try {
     const response = await auth.post('save_health_complaints', {
       body: JSON.stringify({
         id: complaint.id, // Передаём ID для обновления конкретной записи
@@ -41,9 +40,7 @@ async function save_health_complaints(medcard_id, complaint) {
 
     // После сохранения обновляем список жалоб
     await fetch_health_complaints(props.client_id, props.medcard_id);
-  } catch (error) {
-    console.error('Ошибка при сохранении жалобы:', error);
-  }
+  
 }
 
 async function delete_health_complaints(complaint) {
